@@ -2,36 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1903b48a-7495-469d-b9a7-67b0fa1627ee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold1/reg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold1/rf.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold2/reg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold2/rf.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold3/reg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold3/rf.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold4/reg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold4/rf.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold5/reg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/2003_td_dataset/Fold5/rf.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/web10k/Fold1/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/web10k/Fold2/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/web10k/Fold3/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/web10k/Fold4/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/web10k/Fold5/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/yahoo/Fold1/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/yahoo/Fold2/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/yahoo/Fold3/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/yahoo/Fold4/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baselines/yahoo/Fold5/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deap-master-backup16-07.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deapForL2r.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluateIndividuo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/forTests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gerarBaseline.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/l2rCodes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultados/2003_td_dataset-Fold1-base.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scriptBaseline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,13 +12,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dataset/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="1" selection-start-column="1" selection-end-column="1" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/scriptBaseline.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -59,16 +31,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/tcc_l2r.iml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
       </list>
     </option>
   </component>
@@ -99,9 +61,14 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dataset" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Pedro Henrique\Documents\codes\python\tcc_l2r\dataset" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -125,15 +92,44 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1563721025620</updated>
-      <workItem from="1563721027081" duration="57000" />
+      <workItem from="1563721027081" duration="1378000" />
     </task>
+    <task id="LOCAL-00001" summary="BASIC SPEAII e NSGAII">
+      <created>1563721166447</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1563721166447</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Baselines 2003_td_dataset and Folders baselines">
+      <created>1563721233013</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1563721233013</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Resultados 2003_td_dataset Fold1">
+      <created>1563721258804</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1563721258804</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add folder dataset">
+      <created>1563721811935</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1563721811935</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57000" />
+    <option name="totallyTimeSpent" value="1378000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
@@ -162,13 +158,27 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="SHOW_UNVERSIONED_FILES_WHILE_COMMIT" value="false" />
+    <MESSAGE value="BASIC SPEAII e NSGAII" />
+    <MESSAGE value="Baselines 2003_td_dataset and Folders baselines" />
+    <MESSAGE value="Resultados 2003_td_dataset Fold1" />
+    <MESSAGE value="Add folder dataset" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add folder dataset" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="1" selection-start-column="1" selection-end-column="1" />
+          <caret column="5" lean-forward="true" selection-start-column="5" selection-end-column="5" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dataset/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scriptBaseline.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

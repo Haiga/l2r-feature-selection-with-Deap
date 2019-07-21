@@ -16,10 +16,16 @@ def save(DATASET, NUM_FOLD, ENSEMBLE, ALGORITHM):
     else:
         print('DATASET INVÁLIDO')
 
-    X_train, y_train, query_id_train = l2rCodes.load_L2R_file(
-        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES)
-    X_test, y_test, query_id_test = l2rCodes.load_L2R_file(
-        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES)
+    if DATASET == 'web10k':
+        X_train, y_train, query_id_train = l2rCodes.load_L2R_file(
+            './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/' + 'train' + '.txt', '1' * NUM_GENES)
+        X_test, y_test, query_id_test = l2rCodes.load_L2R_file(
+            './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/' + 'test' + '.txt', '1' * NUM_GENES)
+    else:
+        X_train, y_train, query_id_train = l2rCodes.load_L2R_file(
+            './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES)
+        X_test, y_test, query_id_test = l2rCodes.load_L2R_file(
+            './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES)
 
     scoreTest = [0] * len(y_test)
     model = l2rCodes.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, DATASET)
