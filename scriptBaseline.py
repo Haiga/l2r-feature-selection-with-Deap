@@ -9,8 +9,8 @@ ENSEMBLE = 4
 ALGORITHM = 'reg'
 # ALGORITHM = 'rf'
 
-# for i in range(5):
-for i in range(1):
+for i in range(5):
+    # for i in range(1):
     NUM_FOLD = str(i + 1)
     print('gerando baseline ' + ALGORITHM + ' Fold' + NUM_FOLD + '... ')
     gerarBaseline.save(DATASET, NUM_FOLD, ENSEMBLE, ALGORITHM)
