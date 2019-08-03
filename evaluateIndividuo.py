@@ -65,13 +65,17 @@ def getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_tes
     for i in range(NUM_GENES):
         if list_mask[i] == '1':
             features.append(i)
-    X_train_ind = X_train[:, features]
-    X_test_ind = X_test[:, features]
+    # X_train_ind = X_train[:, features]
+    # X_test_ind = X_test[:, features]
+
+    X_train_ind = X_train.iloc[:, features]
+    X_test_ind = X_test.iloc[:, features]
 
     scoreTest = [0] * len(y_test)
     model = l2rCodes.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, DATASET)
     model.fit(X_train_ind, y_train)
-    resScore = model.predict(X_test_ind)
+    # resScore = model.predict(X_test_ind)
+    resScore = model.predict(X_test_ind).to_array()
     c = 0
     for i in resScore:
         scoreTest[c] = i

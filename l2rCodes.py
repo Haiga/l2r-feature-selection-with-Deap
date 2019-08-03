@@ -13,7 +13,7 @@ from sklearn.tree import DecisionTreeRegressor
 import math
 import time
 from scipy.stats import norm
-
+from cuml import LinearRegression as cuLinearRegression
 
 def load_L2R_file(TRAIN_FILE_NAME, MASK):
     nLines = 0
@@ -272,7 +272,8 @@ def getTheModel(ensemble, ntrees, frate, seed, coll):
         clf = GradientBoostingRegressor(n_estimators=ntrees, learning_rate=0.1, max_depth=2, random_state=seed,
                                         loss='ls')
     if ensemble == 4:
-        clf = linear_model.LinearRegression(n_jobs=-1)
+        clf = cuLinearRegression(fit_intercept=True, normalize=True,algorithm='eig')
+        # clf = linear_model.LinearRegression(n_jobs=-1)
 
     if ensemble == 5:
         clf = DecisionTreeRegressor(random_state=seed)
