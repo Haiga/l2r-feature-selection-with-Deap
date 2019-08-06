@@ -29,6 +29,16 @@ class Timer:
         self.sum += dif
         self.mean = self.sum / self.count
 
+    def getInfo(self):
+        print('Total Executions: ' + str(self.count))
+        print('Média Tempo de execução: ' + str(self.mean))
+        print('Tempo Total de execução: ' + str(self.sum))
+
+        print('Mínimo tempo de execução: ' + str(self.min))
+        print('Máximo tempo de execução: ' + str(self.max))
+        info = {'count': self.count, 'mean': self.mean, 'sum': self.sum, 'min': self.min, 'max': self.max}
+        return info
+
 
 def testTimer():
     t = Timer()
