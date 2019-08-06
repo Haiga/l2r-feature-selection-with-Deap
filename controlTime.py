@@ -2,7 +2,8 @@ import time
 
 
 class Timer:
-    def __init__(self):
+    def __init__(self, nome=''):
+        self.nome = nome
         self.max = None
         self.min = None
         self.count = 0
@@ -30,12 +31,14 @@ class Timer:
         self.mean = self.sum / self.count
 
     def getInfo(self):
+        print('---- ' + self.nome + ' -----')
         print('Total Executions: ' + str(self.count))
         print('Média Tempo de execução: ' + str(self.mean))
         print('Tempo Total de execução: ' + str(self.sum))
 
         print('Mínimo tempo de execução: ' + str(self.min))
         print('Máximo tempo de execução: ' + str(self.max))
+        print('\n')
         info = {'count': self.count, 'mean': self.mean, 'sum': self.sum, 'min': self.min, 'max': self.max}
         return info
 
