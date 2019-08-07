@@ -21,7 +21,7 @@ def getWeights(params):
     if 'precision' in params:
         weights.append(1)
     if 'risk' in params:
-        weights.append(-1)
+        weights.append(1)
     if 'feature' in params:
         weights.append(-1)
 
