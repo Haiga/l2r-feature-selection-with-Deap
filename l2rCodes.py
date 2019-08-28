@@ -15,7 +15,7 @@ import time
 from scipy.stats import norm
 from cuml import LinearRegression as cuLinearRegression
 
-def load_L2R_file(TRAIN_FILE_NAME, MASK):
+def load_L2R_file(TRAIN_FILE_NAME, MASK, sparse=False):
     nLines = 0
     nFeatures = 0
     #### GETTING THE DIMENSIONALITY
@@ -30,6 +30,7 @@ def load_L2R_file(TRAIN_FILE_NAME, MASK):
     y_train = np.zeros((nLines))
     q_train = np.zeros((nLines))
     maskList = list(MASK)
+    numFeaturesList = []
     iL = 0
     web10k = False
     if len(MASK) == 136:
@@ -41,6 +42,8 @@ def load_L2R_file(TRAIN_FILE_NAME, MASK):
             m = re.search(r"(\d)\sqid:(\d+)\s(.*)\s#.*", line)
 
         featuresList = (re.sub(r"\d*:", "", m.group(3))).split(" ")
+        if sparse:
+            numFeaturesList = (re.sub(r":.?[0-9]+.?[0-9]+\s", " ", m.group(3) + " ")).split(" ")
         y_train[iL] = m.group(1)
         q_train[iL] = m.group(2)
 
@@ -48,7 +51,10 @@ def load_L2R_file(TRAIN_FILE_NAME, MASK):
         colSelFeat = 0
         for i in featuresList:
             if maskList[colAllFeat] == "1":
-                x_train[iL][colSelFeat] = float(i)
+                if sparse:
+                    x_train[iL][int(numFeaturesList[colAllFeat]) - 1] = float(i)
+                else:
+                    x_train[iL][colSelFeat] = float(i)
                 colSelFeat = colSelFeat + 1
             colAllFeat = colAllFeat + 1
         iL = iL + 1
