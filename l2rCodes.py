@@ -159,6 +159,14 @@ def getEvaluation(score, listQ, label, trainFile, metric, resultPrefix):
         dataset = "letor"
     elif "yahoo" in trainFile:
         dataset = "web10k"
+    elif "lastfm" in trainFile:
+        dataset = "web10k"
+    elif "movielens" in trainFile:
+        dataset = "web10k"
+    elif "youtube" in trainFile:
+        dataset = "web10k"
+    elif "bibsonomy" in trainFile:
+        dataset = "web10k"
     else:
         print("There is no evaluation to this dataset, dataFile: ", trainFile)
         exit(0)
