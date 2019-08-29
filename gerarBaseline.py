@@ -1,7 +1,7 @@
 import l2rCodes
 
 
-def save(DATASET, NUM_FOLD, ENSEMBLE, ALGORITHM):
+def save(DATASET, NUM_FOLD, ENSEMBLE, ALGORITHM, sparse=False):
     NUM_GENES = None
     SEED = 1313
     NTREES = 50
@@ -13,13 +13,15 @@ def save(DATASET, NUM_FOLD, ENSEMBLE, ALGORITHM):
         NUM_GENES = 136
     elif DATASET == 'yahoo':
         NUM_GENES = 700
+    elif DATASET in ['movielens', 'lastfm', 'bibsonomy', 'youtube']:
+        NUM_GENES = 13
     else:
         print('DATASET INVÁLIDO')
 
     X_train, y_train, query_id_train = l2rCodes.load_L2R_file(
-        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES)
+        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES, sparse)
     X_test, y_test, query_id_test = l2rCodes.load_L2R_file(
-        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES)
+        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES, sparse)
 
     scoreTest = [0] * len(y_test)
     model = l2rCodes.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, DATASET)
