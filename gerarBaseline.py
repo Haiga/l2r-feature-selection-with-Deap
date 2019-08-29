@@ -15,6 +15,7 @@ def save(DATASET, NUM_FOLD, ENSEMBLE, ALGORITHM, sparse=False):
         NUM_GENES = 700
     elif DATASET in ['movielens', 'lastfm', 'bibsonomy', 'youtube']:
         NUM_GENES = 13
+
     else:
         print('DATASET INVÁLIDO')
 
