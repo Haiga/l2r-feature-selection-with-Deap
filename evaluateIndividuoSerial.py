@@ -1,4 +1,4 @@
-import l2rCodes
+import l2rCodesSerial
 import numpy as np
 
 
@@ -53,7 +53,7 @@ def getRisk(queries, DATASET, NUM_FOLD, ALGORITHM):
     for k in range(len(basey)):
         basey[k].append(queries[k])
 
-    r = (l2rCodes.getGeoRisk(np.array(basey), 0.1))[1]
+    r = (l2rCodesSerial.getGeoRisk(np.array(basey), 0.1))[1]
     return r
 
 
@@ -72,7 +72,7 @@ def getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_tes
     # X_test_ind = X_test.iloc[:, features]
 
     scoreTest = [0] * len(y_test)
-    model = l2rCodes.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, DATASET)
+    model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, DATASET)
     model.fit(X_train_ind, y_train)
     resScore = model.predict(X_test_ind)
     # resScore = model.predict(X_test_ind).to_array()
@@ -81,5 +81,5 @@ def getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_tes
         scoreTest[c] = i
         c = c + 1
 
-    ndcg, queries = l2rCodes.getEvaluation(scoreTest, query_id_test, y_test, DATASET, METRIC, "test")
+    ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, DATASET, METRIC, "test")
     return ndcg, queries
