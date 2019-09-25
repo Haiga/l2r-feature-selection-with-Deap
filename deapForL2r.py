@@ -142,7 +142,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
 
     toolbox.register("evaluate", evalIndividuo)
     toolbox.register("mate", tools.cxTwoPoint)
-    toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
+    toolbox.register("mutate", tools.mutFlipBit, indpb=0.3)
     toolbox.register("selectTournament", tools.selTournament, tournsize=2)
     if METHOD == 'spea2':
         toolbox.register("select", tools.selSPEA2)
@@ -174,7 +174,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     for gen in range(NUM_GENERATIONS):
         if METHOD == 'nsga2':
             crossMutTimer.start()
-            offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.1)
+            offspring = algorithms.varAnd(population, toolbox, cxpb=0.9, mutpb=0.2)
             crossMutTimer.stop()
         
         if METHOD == 'nsga2':
@@ -207,7 +207,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             offspring_pool = map(toolbox.clone, mating_pool)
             
             crossMutTimer.start()
-            offspring_pool = algorithms.varAnd(offspring_pool, toolbox, cxpb=0.5, mutpb=0.1)
+            offspring_pool = algorithms.varAnd(offspring_pool, toolbox, cxpb=0.9, mutpb=0.2)
             crossMutTimer.stop()
             
             population = offspring_pool
