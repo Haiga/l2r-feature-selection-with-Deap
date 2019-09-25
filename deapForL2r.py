@@ -1,4 +1,4 @@
-%cd /content/tcc_l2r
+# %cd /content/tcc_l2r
 import random
 from deap import creator, base, tools, algorithms
 import evaluateIndividuoSerial
@@ -6,17 +6,19 @@ import l2rCodesSerial
 import json
 import time
 import numpy as np
-#import cudf
+# import cudf
 import controlTime as ct
 import matplotlib.pyplot as plt
+import readSintetic
 
-NUM_INDIVIDUOS = 50#50
-NUM_GENERATIONS = 50#50
+NUM_INDIVIDUOS = 50  # 50
+NUM_GENERATIONS = 50  # 50
 NUM_GENES = None
 PARAMS = ['precision', 'risk', 'feature']
 METHOD = 'spea2'  # 'nsga2'
-DATASET = 'lastfm'
+DATASET = '2003_td_dataset'
 NUM_FOLD = '1'
+SINTETIC = True
 sparse = False
 
 ##
@@ -44,8 +46,6 @@ elif DATASET in ['movielens', 'lastfm', 'bibsonomy', 'youtube']:
 else:
     print('DATASET INVÁLIDO')
 
-
-    
 readFilesTimer = ct.Timer(nome='Tempo Leitura Dataset')
 convertToDataFrameTimer = ct.Timer(nome='Tempo Conversão Array to CUDF')
 readResultTimer = ct.Timer(nome='Tempo Leitura Fitness de Indivíduos Salvos')
@@ -60,21 +60,21 @@ estatisticaGerTimer = ct.Timer(nome='Tempo para Computar Estatísticas da Geraç
 printsTimer = ct.Timer(nome='Tempo para Printar Resultados')
 persistFinalResultTimer = ct.Timer(nome='Tempo Para Persistir Dados no Final da Execução')
 
+
 def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
-    
     readFilesTimer.start()
     X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
         './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES, sparse)
     X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
         './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES, sparse)
     readFilesTimer.stop()
-    
-    #convertToDataFrameTimer.start()
-    #X_train = cudf.DataFrame.from_records(X_train)
-    #X_test = cudf.DataFrame.from_records(X_test)
-    #y_train = cudf.Series(y_train)
-    #convertToDataFrameTimer.stop()
-    
+
+    # convertToDataFrameTimer.start()
+    # X_train = cudf.DataFrame.from_records(X_train)
+    # X_test = cudf.DataFrame.from_records(X_test)
+    # y_train = cudf.Series(y_train)
+    # convertToDataFrameTimer.stop()
+
     readResultTimer.start()
     NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-1.json'
     COLECAO_BASE = {}
@@ -89,9 +89,9 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
         printsTimer.start()
         print('Primeira vez executando ...')
         printsTimer.stop()
-        
+
     readResultTimer.stop()
-    
+
     def evalIndividuo(individual):
         avaliarTimer.start()
         evaluation = []
@@ -113,8 +113,9 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             if 'feature' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['feature'])
         else:
-            result = evaluateIndividuoSerial.getEval(individuo_ga, NUM_GENES, X_train, y_train, X_test, y_test, query_id_test,
-                                               ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM)
+            result = evaluateIndividuoSerial.getEval(individuo_ga, NUM_GENES, X_train, y_train, X_test, y_test,
+                                                     query_id_test,
+                                                     ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM)
             COLECAO_BASE[individuo_ga] = {}
             COLECAO_BASE[individuo_ga]['precision'] = result[0]
             COLECAO_BASE[individuo_ga]['risk'] = result[1]
@@ -126,10 +127,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
                 evaluation.append(result[1])
             if 'feature' in PARAMS:
                 evaluation.append(result[2])
-        
+
         avaliarTimer.stop()
         return evaluation
-    
+
     toolboxTimer.start()
     creator.create("MyFitness", base.Fitness, weights=evaluateIndividuoSerial.getWeights(PARAMS))
     creator.create("Individual", list, fitness=creator.MyFitness)
@@ -151,7 +152,6 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     else:
         Exception()
 
-    
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     # stats.register("avg", numpy.mean, axis=0)
     # stats.register("std", numpy.std, axis=0)
@@ -161,22 +161,26 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     logbook = tools.Logbook()
     # logbook.header = "gen", "evals", "std", "min", "avg", "max"
     logbook.header = "gen", "min", "max"
-    
+
     toolboxTimer.stop()
-    
+
     populacaoInicialTimer.start()
-    population = toolbox.population(n=NUM_INDIVIDUOS)
+    if SINTETIC:
+        population = readSintetic.get(DATASET, NUM_FOLD, NUM_INDIVIDUOS)
+    else:
+        population = toolbox.population(n=NUM_INDIVIDUOS)
+
     if METHOD == 'nsga2':
         population = toolbox.select(population, NUM_INDIVIDUOS)
     archive = []
     populacaoInicialTimer.stop()
-        
+
     for gen in range(NUM_GENERATIONS):
         if METHOD == 'nsga2':
             crossMutTimer.start()
             offspring = algorithms.varAnd(population, toolbox, cxpb=0.9, mutpb=0.2)
             crossMutTimer.stop()
-        
+
         if METHOD == 'nsga2':
             fits = toolbox.map(toolbox.evaluate, population + offspring)
             atribuicaoFitTimer.start()
@@ -202,25 +206,25 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             methodTimer.start()
             archive = toolbox.select(population + archive, k=NUM_INDIVIDUOS)
             methodTimer.stop()
-            
+
             mating_pool = toolbox.selectTournament(archive, k=NUM_INDIVIDUOS)
             offspring_pool = map(toolbox.clone, mating_pool)
-            
+
             crossMutTimer.start()
             offspring_pool = algorithms.varAnd(offspring_pool, toolbox, cxpb=0.9, mutpb=0.2)
             crossMutTimer.stop()
-            
+
             population = offspring_pool
 
         persistResultTimer.start()
-        if(gen % 5 == 0):
+        if (gen % 5 == 0):
             with open(NOME_COLECAO_BASE, 'w') as fp:
-                json.dump(COLECAO_BASE, fp)        
+                json.dump(COLECAO_BASE, fp)
         persistResultTimer.stop()
-        
+
         estatisticaGerTimer.start()
-        #print(population)
-        #return 0
+        # print(population)
+        # return 0
         if METHOD == 'nsga2':
             record = stats.compile(population)
         elif METHOD == 'spea2':
@@ -250,9 +254,8 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # plt.scatter(front[:, 0], front[:, 1], c="b")
     # plt.axis("tight")
     # plt.show()
-    
+
     if METHOD == 'nsga2':
         return population
     elif METHOD == 'spea2':
         return archive
-
