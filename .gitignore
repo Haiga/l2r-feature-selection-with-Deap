@@ -1,3 +1,7 @@
 # pycharm project files
 .idea
 
+__pycache__/controlTime.cpython-37.pyc
+__pycache__/evaluateIndividuoSerial.cpython-37.pyc
+__pycache__/readSintetic.cpython-37.pyc
+__pycache__/l2rCodesSerial.cpython-37.pyc
