@@ -14,3 +14,4 @@ Códigos para feature selection, utilizando algoritmos genéticos em contexto de
 * [DEAP](https://github.com/deap) - Distributed Evolutionary Algorithms in Python
 * [cuML](https://github.com/rapidsai/cuml) - RAPIDS Machine Learning Library 
 * [cuDF](https://github.com/rapidsai/cudf) - GPU DataFrame Library
+* [scikit-learn](https://github.com/scikit-learn/scikit-learn) - Machine Learning in Python
