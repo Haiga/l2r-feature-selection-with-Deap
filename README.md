@@ -1,4 +1,4 @@
-# tcc_l2r
+# Feature Selection for Learning To Rank with Multi Objective Genetic Algorithms
 
 Códigos para feature selection, utilizando algoritmos genéticos em contexto de Aprendizagem de Ranqueamento
 
