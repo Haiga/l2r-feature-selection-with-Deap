@@ -76,7 +76,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # convertToDataFrameTimer.stop()
 
     readResultTimer.start()
-    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-1.json'
+    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base.json'
     COLECAO_BASE = {}
 
     try:
@@ -91,6 +91,9 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
         printsTimer.stop()
 
     readResultTimer.stop()
+
+    current_generation_s = 1
+    current_generation_n = 1
 
     def evalIndividuo(individual):
         avaliarTimer.start()
@@ -120,6 +123,8 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             COLECAO_BASE[individuo_ga]['precision'] = result[0]
             COLECAO_BASE[individuo_ga]['risk'] = result[1]
             COLECAO_BASE[individuo_ga]['feature'] = result[2]
+            COLECAO_BASE[individuo_ga]['geracao_s'] = current_generation_s
+            COLECAO_BASE[individuo_ga]['geracao_n'] = current_generation_n
 
             if 'precision' in PARAMS:
                 evaluation.append(result[0])
@@ -220,7 +225,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             population = offspring_pool
 
         persistResultTimer.start()
-        if (gen % 5 == 0):
+        if gen % 5 == 0:
             with open(NOME_COLECAO_BASE, 'w') as fp:
                 json.dump(COLECAO_BASE, fp)
         persistResultTimer.stop()
@@ -230,8 +235,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
         # return 0
         if METHOD == 'nsga2':
             record = stats.compile(population)
+            current_generation_n += 1
         elif METHOD == 'spea2':
             record = stats.compile(archive)
+            current_generation_s += 1
         logbook.record(gen=gen, **record)
         estatisticaGerTimer.stop()
         printsTimer.start()
