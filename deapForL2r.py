@@ -1,5 +1,7 @@
 # %cd /content/tcc_l2r
 import random
+from copy import deepcopy
+
 from deap import creator, base, tools, algorithms
 import evaluateIndividuoSerial
 import l2rCodesSerial
@@ -11,8 +13,8 @@ import controlTime as ct
 import matplotlib.pyplot as plt
 import readSintetic
 
-NUM_INDIVIDUOS = 50  # 50
-NUM_GENERATIONS = 50  # 50
+NUM_INDIVIDUOS = 20  # 50
+NUM_GENERATIONS = 20  # 50
 NUM_GENES = None
 PARAMS = ['precision', 'risk', 'feature']
 METHOD = 'spea2'  # 'nsga2'
@@ -76,12 +78,21 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # convertToDataFrameTimer.stop()
 
     readResultTimer.start()
-    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base.json'
+    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-testing2.json'
     COLECAO_BASE = {}
 
     try:
         with open(NOME_COLECAO_BASE, 'r') as fp:
             COLECAO_BASE = json.load(fp)
+
+        for item in COLECAO_BASE:
+            for att in COLECAO_BASE[item]:
+                try:
+                    if len(COLECAO_BASE[item][att]) > 1:
+                        COLECAO_BASE[item][att] = np.array(COLECAO_BASE[item][att])
+                except:
+                    pass
+
         printsTimer.start()
         print('A base tem ' + str(len(COLECAO_BASE)) + ' indivíduos!\n')
         printsTimer.stop()
@@ -159,13 +170,14 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
 
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     # stats.register("avg", numpy.mean, axis=0)
-    # stats.register("std", numpy.std, axis=0)
     stats.register("min", np.min, axis=0)
     stats.register("max", np.max, axis=0)
+    stats.register("mean", np.mean, axis=0)
+    # stats.register("std", np.std, axis=0)
 
     logbook = tools.Logbook()
     # logbook.header = "gen", "evals", "std", "min", "avg", "max"
-    logbook.header = "gen", "min", "max"
+    logbook.header = "gen", "min", "max", "mean",
 
     toolboxTimer.stop()
 
@@ -226,8 +238,16 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
 
         persistResultTimer.start()
         if gen % 5 == 0:
+            TEMP_COLECAO_BASE = deepcopy(COLECAO_BASE)
+            for item in TEMP_COLECAO_BASE:
+                for att in TEMP_COLECAO_BASE[item]:
+                    try:
+                        if len(TEMP_COLECAO_BASE[item][att]) > 1:
+                            TEMP_COLECAO_BASE[item][att] = TEMP_COLECAO_BASE[item][att].tolist()
+                    except:
+                        pass
             with open(NOME_COLECAO_BASE, 'w') as fp:
-                json.dump(COLECAO_BASE, fp)
+                json.dump(TEMP_COLECAO_BASE, fp)
         persistResultTimer.stop()
 
         estatisticaGerTimer.start()
@@ -253,8 +273,17 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # print(top10)
 
     persistFinalResultTimer.start()
+    TEMP_COLECAO_BASE = COLECAO_BASE.copy()
+    for item in TEMP_COLECAO_BASE:
+        for att in TEMP_COLECAO_BASE[item]:
+            try:
+                if len(TEMP_COLECAO_BASE[item][att]) > 1:
+                    TEMP_COLECAO_BASE[item][att] = TEMP_COLECAO_BASE[item][att].tolist()
+            except:
+                pass
+
     with open(NOME_COLECAO_BASE, 'w') as fp:
-        json.dump(COLECAO_BASE, fp)
+        json.dump(TEMP_COLECAO_BASE, fp)
     persistFinalResultTimer.stop()
 
     # Dá pra fazer a evolução deles com as informações do logboook

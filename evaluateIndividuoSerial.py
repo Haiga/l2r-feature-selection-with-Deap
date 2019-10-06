@@ -11,7 +11,8 @@ def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_tra
                                            ENSEMBLE, NTREES, SEED, DATASET,
                                            METRIC)
 
-    evaluation.append(ndcg)
+    evaluation.append(queries)
+    # evaluation.append(ndcg)
     evaluation.append(getRisk(queries, DATASET, NUM_FOLD, ALGORITHM))
     evaluation.append(getTotalFeature(individuo))
 
