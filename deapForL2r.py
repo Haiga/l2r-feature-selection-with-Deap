@@ -13,8 +13,8 @@ import controlTime as ct
 import matplotlib.pyplot as plt
 import readSintetic
 
-NUM_INDIVIDUOS = 20  # 50
-NUM_GENERATIONS = 20  # 50
+NUM_INDIVIDUOS = 10  # 50
+NUM_GENERATIONS = 10  # 50
 NUM_GENES = None
 PARAMS = ['precision', 'risk', 'feature']
 METHOD = 'spea2'  # 'nsga2'
@@ -78,7 +78,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # convertToDataFrameTimer.stop()
 
     readResultTimer.start()
-    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-testing2.json'
+    NOME_COLECAO_BASE = './new_resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-testingnsga.json'
     COLECAO_BASE = {}
 
     try:
@@ -126,6 +126,20 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
                 evaluation.append(COLECAO_BASE[individuo_ga]['risk'])
             if 'feature' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['feature'])
+
+            flag = False
+            if METHOD == "nsga2" and COLECAO_BASE[individuo_ga]['method'] == 2:
+                flag = True
+            if METHOD == "spea2" and COLECAO_BASE[individuo_ga]['method'] == 1:
+                flag = True
+            if flag:
+                COLECAO_BASE[individuo_ga]['method'] = 3
+                if METHOD == 'nsga2':
+                    COLECAO_BASE[individuo_ga]['geracao_n'] = current_generation_n
+                elif METHOD == 'spea2':
+                    COLECAO_BASE[individuo_ga]['geracao_s'] = current_generation_s
+
+
         else:
             result = evaluateIndividuoSerial.getEval(individuo_ga, NUM_GENES, X_train, y_train, X_test, y_test,
                                                      query_id_test,
@@ -136,6 +150,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             COLECAO_BASE[individuo_ga]['feature'] = result[2]
             COLECAO_BASE[individuo_ga]['geracao_s'] = current_generation_s
             COLECAO_BASE[individuo_ga]['geracao_n'] = current_generation_n
+            if METHOD == 'nsga2':
+                COLECAO_BASE[individuo_ga]['method'] = 1
+            elif METHOD == 'spea2':
+                COLECAO_BASE[individuo_ga]['method'] = 2
 
             if 'precision' in PARAMS:
                 evaluation.append(result[0])
