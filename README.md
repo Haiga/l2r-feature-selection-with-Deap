@@ -19,7 +19,7 @@ Códigos para feature selection, utilizando algoritmos genéticos em contexto de
 
 ## Configuration
 
-A biblioteca DEAP não disponibiliza comparação de objetivos multivalorados com TTest. Devido esse problema foi desenvolvido um fork da biblioteca, alterando as funções de dominância, selSPEA2 e selNSGA2 que aplica teste estatístico para comparação dos indivíduos. 
+A biblioteca DEAP não disponibiliza comparação de objetivos multivalorados com TTest. Devido esse problema foi desenvolvido um fork da biblioteca, alterando as funções de dominância, selSPEA2 e selNSGA2. Agora essas aplicam teste estatístico para comparação dos indivíduos. 
 
 Para instalar desinstale versões anteriores do DEAP:
 ```
