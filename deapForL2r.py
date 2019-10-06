@@ -165,10 +165,13 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     toolboxTimer.stop()
 
     populacaoInicialTimer.start()
+    population = toolbox.population(n=NUM_INDIVIDUOS)
     if SINTETIC:
-        population = readSintetic.get(DATASET, NUM_FOLD, NUM_INDIVIDUOS)
-    else:
-        population = toolbox.population(n=NUM_INDIVIDUOS)
+        list_individuos = readSintetic.get(DATASET, NUM_FOLD, NUM_INDIVIDUOS)
+        for indice_individuo in range(NUM_INDIVIDUOS):
+            temp_ind = list_individuos[indice_individuo]
+            for indice_gene in range(NUM_GENES):
+                population[indice_individuo][indice_gene] = temp_ind[indice_gene]
 
     if METHOD == 'nsga2':
         population = toolbox.select(population, NUM_INDIVIDUOS)
