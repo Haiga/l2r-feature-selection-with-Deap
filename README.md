@@ -30,4 +30,4 @@ E instale com o código proveniente do fork:
 pip install git+https://github.com/Haiga/deap#egg=deap
 ```
 
-Nota: Esse fork utiliza a biblioteca [rpy2](https://rpy2.bitbucket.io/) - R in Python, e deve ser instala previamente.
+Nota: Esse fork utiliza a biblioteca [rpy2](https://rpy2.bitbucket.io/) - R in Python, e deve ser instalada previamente.
