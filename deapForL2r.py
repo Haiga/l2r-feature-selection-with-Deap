@@ -13,8 +13,8 @@ import controlTime as ct
 import matplotlib.pyplot as plt
 import readSintetic
 
-NUM_INDIVIDUOS = 10  # 50
-NUM_GENERATIONS = 10  # 50
+NUM_INDIVIDUOS = 5  # 50
+NUM_GENERATIONS = 5  # 50
 NUM_GENES = None
 PARAMS = ['precision', 'risk', 'feature']
 METHOD = 'spea2'  # 'nsga2'
@@ -278,6 +278,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             record = stats.compile(archive)
             current_generation_s += 1
         logbook.record(gen=gen, **record)
+
         estatisticaGerTimer.stop()
         printsTimer.start()
         print(logbook.stream)
@@ -289,6 +290,16 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     #     print(ind)
     #     print(evalIndividuo(ind))
     # print(top10)
+
+    log_json = {}
+    for i in range(len(logbook)):
+        log_json[i] = {}
+        log_json[i]['gen'] = logbook[i]['gen']
+        log_json[i]['min'] = logbook[i]['min'].tolist()
+        log_json[i]['max'] = logbook[i]['max'].tolist()
+        log_json[i]['mean'] = logbook[i]['mean'].tolist()
+    with open("./logs/result"+METHOD+"fold"+NUM_FOLD+".json", 'w') as fp:
+        json.dump(log_json, fp)
 
     persistFinalResultTimer.start()
     TEMP_COLECAO_BASE = COLECAO_BASE.copy()
