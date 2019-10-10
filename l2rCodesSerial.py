@@ -14,6 +14,7 @@ import math
 import time
 from scipy.stats import norm
 # from cuml import LinearRegression as cuLinearRegression
+from scipy import stats
 
 def load_L2R_file(TRAIN_FILE_NAME, MASK, sparse=False):
     nLines = 0
@@ -423,6 +424,22 @@ def executeAdaRank(Xtrain, yTrain, qTrain, Xtest, yTest, qTest, mask, fold):
 ###### ALL BEGNING HERE
 # python ga_scikitlearn.py $trainSet $testSet  $valiSet $fold $ntrees $ensemble $subCross $cross $print_fold $paramC $measure $mask
 
+def getTRisk(aps, base, alpha):
+    vetDelta = []
+    i = 0
+    for my in aps:
+        delta = my - base[i]
+        i = i + 1
+
+        if delta < 0:
+            delta = (1 + alpha) * delta
+        vetDelta.append(delta)
+
+    urisk = np.mean(vetDelta)
+    if urisk == 0:
+        return 0.0, vetDelta
+    SEurisk = stats.sem(vetDelta)
+    return urisk / SEurisk, np.array(vetDelta)
 
 def getGeoRisk(mat, alpha):
     ##### IMPORTANT
