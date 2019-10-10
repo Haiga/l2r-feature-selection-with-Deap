@@ -3,7 +3,6 @@ import numpy as np
 from sklearn import model_selection
 
 
-
 def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
             DATASET, METRIC, NUM_FOLD, ALGORITHM):
     evaluation = []
@@ -15,6 +14,7 @@ def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_tra
     # evaluation.append(ndcg)
     evaluation.append(getRisk(queries, DATASET, NUM_FOLD, ALGORITHM))
     evaluation.append(getTotalFeature(individuo))
+    evaluation.append(getTRisk(queries, DATASET, NUM_FOLD, ALGORITHM))
 
     return evaluation
 
@@ -27,11 +27,14 @@ def getWeights(params):
         weights.append(1)
     if 'feature' in params:
         weights.append(-1)
+    if 'trisk' in params:
+        weights.append(-1)
 
     return weights
 
 
-def getPrecision(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED, DATASET,
+def getPrecision(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
+                 DATASET,
                  METRIC):
     ndcg, queries = getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train,
                                            ENSEMBLE, NTREES, SEED, DATASET,
@@ -57,6 +60,17 @@ def getRisk(queries, DATASET, NUM_FOLD, ALGORITHM):
 
     r = (l2rCodesSerial.getGeoRisk(np.array(basey), 0.1))[1]
     return r
+
+
+def getTRisk(queries, DATASET, NUM_FOLD, ALGORITHM):
+    base = []
+
+    arq = open(r'./baselines/' + DATASET + '/Fold' + NUM_FOLD + '/' + ALGORITHM + '.txt')
+    for line in arq:
+        base.append(float(line.split()[0]))
+
+    r, vetorRisk = (l2rCodesSerial.getTRisk(queries, base, 0.1))
+    return vetorRisk
 
 
 def getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES,
