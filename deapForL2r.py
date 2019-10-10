@@ -16,7 +16,8 @@ import readSintetic
 NUM_INDIVIDUOS = 5  # 50
 NUM_GENERATIONS = 5  # 50
 NUM_GENES = None
-PARAMS = ['precision', 'risk', 'feature']
+# PARAMS = ['precision', 'risk', 'feature']
+PARAMS = ['precision', 'trisk', 'feature']
 METHOD = 'spea2'  # 'nsga2'
 DATASET = '2003_td_dataset'
 NUM_FOLD = '1'
@@ -78,7 +79,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # convertToDataFrameTimer.stop()
 
     readResultTimer.start()
-    NOME_COLECAO_BASE = './new_resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-testingnsga.json'
+    NOME_COLECAO_BASE = './new_resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-testingnsga33.json'
     COLECAO_BASE = {}
 
     try:
@@ -119,6 +120,8 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
                 evaluation.append(0)
             if 'feature' in PARAMS:
                 evaluation.append(NUM_GENES)
+            if 'trisk' in PARAMS:
+                evaluation.append(0)
         elif individuo_ga in COLECAO_BASE:
             if 'precision' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['precision'])
@@ -126,6 +129,8 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
                 evaluation.append(COLECAO_BASE[individuo_ga]['risk'])
             if 'feature' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['feature'])
+            if 'trisk' in PARAMS:
+                evaluation.append(COLECAO_BASE[individuo_ga]['trisk'])
 
             flag = False
             if METHOD == "nsga2" and COLECAO_BASE[individuo_ga]['method'] == 2:
@@ -148,6 +153,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             COLECAO_BASE[individuo_ga]['precision'] = result[0]
             COLECAO_BASE[individuo_ga]['risk'] = result[1]
             COLECAO_BASE[individuo_ga]['feature'] = result[2]
+            COLECAO_BASE[individuo_ga]['trisk'] = result[3]
             COLECAO_BASE[individuo_ga]['geracao_s'] = current_generation_s
             COLECAO_BASE[individuo_ga]['geracao_n'] = current_generation_n
             if METHOD == 'nsga2':
@@ -161,6 +167,8 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
                 evaluation.append(result[1])
             if 'feature' in PARAMS:
                 evaluation.append(result[2])
+            if 'trisk' in PARAMS:
+                evaluation.append(result[3])
 
         avaliarTimer.stop()
         return evaluation
