@@ -18,6 +18,7 @@ NUM_GENERATIONS = 5  # 50
 NUM_GENES = None
 # PARAMS = ['precision', 'risk', 'feature']
 PARAMS = ['precision', 'trisk', 'feature']
+# PARAMS = ['precision']
 METHOD = 'spea2'  # 'nsga2'
 DATASET = '2003_td_dataset'
 NUM_FOLD = '1'
@@ -306,7 +307,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
         log_json[i]['min'] = logbook[i]['min'].tolist()
         log_json[i]['max'] = logbook[i]['max'].tolist()
         log_json[i]['mean'] = logbook[i]['mean'].tolist()
-    with open("./logs/result"+METHOD+"fold"+NUM_FOLD+".json", 'w') as fp:
+    str_params = ''
+    for param in PARAMS:
+        str_params += param
+    with open("./logs/result"+METHOD+"fold"+NUM_FOLD+str_params+".json", 'w') as fp:
         json.dump(log_json, fp)
 
     persistFinalResultTimer.start()
