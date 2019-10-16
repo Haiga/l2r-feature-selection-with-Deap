@@ -58,7 +58,7 @@ def getRisk(queries, DATASET, NUM_FOLD, ALGORITHM):
     for k in range(len(basey)):
         basey[k].append(queries[k])
 
-    r = (l2rCodesSerial.getGeoRisk(np.array(basey), 0.1))[1]
+    r = (l2rCodesSerial.getGeoRisk(np.array(basey), 5))[1]
     return r
 
 
@@ -69,7 +69,7 @@ def getTRisk(queries, DATASET, NUM_FOLD, ALGORITHM):
     for line in arq:
         base.append(float(line.split()[0]))
 
-    r, vetorRisk = (l2rCodesSerial.getTRisk(queries, base, 0.1))
+    r, vetorRisk = (l2rCodesSerial.getTRisk(queries, base, 5))
     return vetorRisk
 
 
