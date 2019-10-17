@@ -28,10 +28,10 @@ sparse = False
 ##
 SEED = 1313
 
-NTREES = 50
+NTREES = 1
 SUB_CROSS = 3
 METRIC = 'NDCG'
-ENSEMBLE = 4  # for regression
+ENSEMBLE = 1  # for regression
 ALGORITHM = 'reg'  # for baseline
 # ENSEMBLE = 1 #for regression forest
 ##
