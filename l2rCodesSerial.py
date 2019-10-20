@@ -272,8 +272,8 @@ def getQueries(query_id_train):
 def getTheModel(ensemble, ntrees, frate, seed, coll):
     seed = seed + 10
 
-    if ntrees < 100:
-        ntrees = 100
+    # if ntrees < 100:
+    #     ntrees = 100
     if frate < 0.3:
         frate = 0.3
     if ensemble == 1:
