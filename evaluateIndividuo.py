@@ -46,7 +46,7 @@ def getTotalFeature(individuo):
 def getRisk(queries, DATASET, NUM_FOLD, ALGORITHM):
     base = []
 
-    arq = open(r'./baselines/' + DATASET + '/Fold' + NUM_FOLD + '/' + ALGORITHM + '.txt')
+    arq = open(r'./baselines/' + DATASET + '/Fold' + NUM_FOLD + '/' + ALGORITHM + 'train.txt')
     for line in arq:
         base.append([float(line.split()[0])])
     basey = base.copy()

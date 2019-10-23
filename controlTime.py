@@ -39,7 +39,8 @@ class Timer:
         print('Mínimo tempo de execução: ' + str(self.min))
         print('Máximo tempo de execução: ' + str(self.max))
         print('\n')
-        info = {'count': self.count, 'mean': self.mean, 'sum': self.sum, 'min': self.min, 'max': self.max}
+        info = {'nome': self.nome, 'count': self.count, 'mean': self.mean, 'sum': self.sum, 'min': self.min,
+                'max': self.max}
         return info
 
 

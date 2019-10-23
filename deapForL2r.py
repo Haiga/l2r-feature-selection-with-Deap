@@ -1,4 +1,6 @@
-# %cd /content/tcc_l2r
+# @title Main GA SERIAL{display-mode: "form"}
+
+
 import random
 from copy import deepcopy
 
@@ -6,37 +8,25 @@ from deap import creator, base, tools, algorithms
 import evaluateIndividuoSerial
 import l2rCodesSerial
 import json
-import time
 import numpy as np
 # import cudf
 import controlTime as ct
-import matplotlib.pyplot as plt
 import readSintetic
 
+# NUM_INDIVIDUOS = 75  # 50
 NUM_INDIVIDUOS = 5  # 50
+# NUM_GENERATIONS = 50  # 50
 NUM_GENERATIONS = 5  # 50
 NUM_GENES = None
 # PARAMS = ['precision', 'risk', 'feature']
-PARAMS = ['precision', 'trisk', 'feature']
-# PARAMS = ['precision']
+# PARAMS = ['precision', 'trisk', 'feature']
+# PARAMS = ['precision', 'risk']
+PARAMS = None
 METHOD = 'spea2'  # 'nsga2'
-DATASET = '2003_td_dataset'
+DATASET = 'web10k'
 NUM_FOLD = '1'
 SINTETIC = True
 sparse = False
-
-##
-SEED = 1313
-
-NTREES = 1
-SUB_CROSS = 3
-METRIC = 'NDCG'
-ENSEMBLE = 1  # for regression
-ALGORITHM = 'reg'  # for baseline
-# ENSEMBLE = 1 #for regression forest
-##
-
-random.seed(SEED)
 
 if DATASET == '2003_td_dataset':
     NUM_GENES = 64
@@ -49,6 +39,19 @@ elif DATASET in ['movielens', 'lastfm', 'bibsonomy', 'youtube']:
     sparse = True
 else:
     print('DATASET INVÁLIDO')
+
+##
+SEED = 1313
+
+NTREES = 1
+SUB_CROSS = 3
+METRIC = 'NDCG'
+ENSEMBLE = 4  # for regression
+ALGORITHM = 'reg'  # for baseline
+# ENSEMBLE = 1  # for regression forest
+##
+
+random.seed(SEED)
 
 readFilesTimer = ct.Timer(nome='Tempo Leitura Dataset')
 convertToDataFrameTimer = ct.Timer(nome='Tempo Conversão Array to CUDF')
@@ -65,12 +68,13 @@ printsTimer = ct.Timer(nome='Tempo para Printar Resultados')
 persistFinalResultTimer = ct.Timer(nome='Tempo Para Persistir Dados no Final da Execução')
 
 
-def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
+def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
     readFilesTimer.start()
     X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
         './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES, sparse)
-    X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
-        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES, sparse)
+    # X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
+    #     './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES, sparse)
+    X_test, y_test, query_id_test = None, None, None
     readFilesTimer.stop()
 
     # convertToDataFrameTimer.start()
@@ -80,7 +84,9 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     # convertToDataFrameTimer.stop()
 
     readResultTimer.start()
-    NOME_COLECAO_BASE = './new_resultados/' + DATASET + '-Fold' + NUM_FOLD + '-base-testingnsga33.json'
+    # NOME_COLECAO_BASE = './resultados_trisk/' + DATASET + '-Fold' + NUM_FOLD + '-base.json'
+
+    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '.json'
     COLECAO_BASE = {}
 
     try:
@@ -108,6 +114,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     current_generation_s = 1
     current_generation_n = 1
 
+    str_params = 'obj_'
+    for param in PARAMS:
+        str_params += param
+
     def evalIndividuo(individual):
         avaliarTimer.start()
         evaluation = []
@@ -124,6 +134,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
             if 'trisk' in PARAMS:
                 evaluation.append(0)
         elif individuo_ga in COLECAO_BASE:
+            COLECAO_BASE[individuo_ga][str_params] = True
             if 'precision' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['precision'])
             if 'risk' in PARAMS:
@@ -148,13 +159,20 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
 
         else:
             result = evaluateIndividuoSerial.getEval(individuo_ga, NUM_GENES, X_train, y_train, X_test, y_test,
-                                                     query_id_test,
+                                                     query_id_train,
                                                      ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM)
             COLECAO_BASE[individuo_ga] = {}
-            COLECAO_BASE[individuo_ga]['precision'] = result[0]
-            COLECAO_BASE[individuo_ga]['risk'] = result[1]
-            COLECAO_BASE[individuo_ga]['feature'] = result[2]
-            COLECAO_BASE[individuo_ga]['trisk'] = result[3]
+            COLECAO_BASE[individuo_ga][str_params] = True
+            if 'precision' in PARAMS:
+                COLECAO_BASE[individuo_ga]['precision'] = result[0]
+            if 'risk' in PARAMS:
+                COLECAO_BASE[individuo_ga]['risk'] = result[1]
+            if 'feature' in PARAMS:
+                COLECAO_BASE[individuo_ga]['feature'] = result[2]
+            if 'trisk' in PARAMS:
+                COLECAO_BASE[individuo_ga]['trisk'] = result[3]
+            #
+            #
             COLECAO_BASE[individuo_ga]['geracao_s'] = current_generation_s
             COLECAO_BASE[individuo_ga]['geracao_n'] = current_generation_n
             if METHOD == 'nsga2':
@@ -275,11 +293,17 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
                         pass
             with open(NOME_COLECAO_BASE, 'w') as fp:
                 json.dump(TEMP_COLECAO_BASE, fp)
+
+            # %cd /content/tcc_l2r/resultados
+            # !git add .
+            # %cd /content/tcc_l2r
+            # !git commit -m 'resultados da experimentação'
+            # !git push
+
         persistResultTimer.stop()
 
         estatisticaGerTimer.start()
-        # print(population)
-        # return 0
+
         if METHOD == 'nsga2':
             record = stats.compile(population)
             current_generation_n += 1
@@ -293,13 +317,6 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
         print(logbook.stream)
         printsTimer.stop()
 
-    # top10 = tools.selNSGA2(individuals=population, k=10)
-
-    # for ind in top10:
-    #     print(ind)
-    #     print(evalIndividuo(ind))
-    # print(top10)
-
     log_json = {}
     for i in range(len(logbook)):
         log_json[i] = {}
@@ -310,7 +327,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
     str_params = ''
     for param in PARAMS:
         str_params += param
-    with open("./logs/result"+METHOD+"fold"+NUM_FOLD+str_params+".json", 'w') as fp:
+    with open("./logs/result" + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
         json.dump(log_json, fp)
 
     persistFinalResultTimer.start()
@@ -327,13 +344,36 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD):
         json.dump(TEMP_COLECAO_BASE, fp)
     persistFinalResultTimer.stop()
 
-    # Dá pra fazer a evolução deles com as informações do logboook
-    # front = np.array([ind.fitness.values for ind in population])
-    # optimal_front = np.array(front)
-    # plt.scatter(optimal_front[:, 0], optimal_front[:, 1], c="r")
-    # plt.scatter(front[:, 0], front[:, 1], c="b")
-    # plt.axis("tight")
-    # plt.show()
+    timerInformations = {
+        1: readFilesTimer.getInfo(),
+        2: convertToDataFrameTimer.getInfo(),
+        3: readResultTimer.getInfo(),
+        4: avaliarTimer.getInfo(),
+        5: toolboxTimer.getInfo(),
+        6: populacaoInicialTimer.getInfo(),
+        7: crossMutTimer.getInfo(),
+        8: atribuicaoFitTimer.getInfo(),
+        9: methodTimer.getInfo(),
+        10: persistResultTimer.getInfo(),
+        11: estatisticaGerTimer.getInfo(),
+        12: printsTimer.getInfo(),
+        13: persistFinalResultTimer.getInfo()
+    }
+
+    with open("./info/result" + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
+        json.dump(timerInformations, fp)
+
+    # %cd /content/tcc_l2r/logs
+    # !git add .
+    # %cd /content/tcc_l2r
+    # !git commit -m 'logs para análise de evolução'
+    # !git push
+
+    # %cd /content/tcc_l2r/info
+    # !git add .
+    # %cd /content/tcc_l2r
+    # !git commit -m 'informações para análise de tempo'
+    # !git push
 
     if METHOD == 'nsga2':
         return population
