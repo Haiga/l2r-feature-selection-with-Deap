@@ -4,17 +4,28 @@ from sklearn import model_selection
 
 
 def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
-            DATASET, METRIC, NUM_FOLD, ALGORITHM):
+            DATASET, METRIC, NUM_FOLD, ALGORITHM, PARAMS):
     evaluation = []
     ndcg, queries = getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train,
                                            ENSEMBLE, NTREES, SEED, DATASET,
                                            METRIC)
-
-    evaluation.append(queries)
+    if 'precision' in PARAMS:
+        evaluation.append(queries)
+    else:
+        evaluation.append(0)
     # evaluation.append(ndcg)
-    evaluation.append(getRisk(queries, DATASET, NUM_FOLD, ALGORITHM))
-    evaluation.append(getTotalFeature(individuo))
-    evaluation.append(getTRisk(queries, DATASET, NUM_FOLD, ALGORITHM))
+    if 'risk' in PARAMS:
+        evaluation.append(round(getRisk(queries, DATASET, NUM_FOLD, ALGORITHM), 5))
+    else:
+        evaluation.append(0)
+    if 'feature' in PARAMS:
+        evaluation.append(getTotalFeature(individuo))
+    else:
+        evaluation.append(0)
+    if 'trisk' in PARAMS:
+        evaluation.append(getTRisk(queries, DATASET, NUM_FOLD, ALGORITHM))
+    else:
+        evaluation.append(0)
 
     return evaluation
 
