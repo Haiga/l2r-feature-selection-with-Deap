@@ -14,6 +14,7 @@ class Timer:
 
     def start(self):
         self.time1 = time.time()
+        print('Start: ' + self.nome)
 
     def stop(self):
         self.time2 = time.time()
@@ -29,6 +30,8 @@ class Timer:
         self.count += 1
         self.sum += dif
         self.mean = self.sum / self.count
+        print('End: ' + self.nome)
+        print('Time ' + str(dif))
 
     def getInfo(self):
         print('---- ' + self.nome + ' -----')
