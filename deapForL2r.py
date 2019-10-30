@@ -52,6 +52,7 @@ ALGORITHM = 'reg'  # for baseline
 ##
 
 random.seed(SEED)
+np.random.seed(SEED)
 
 readFilesTimer = ct.Timer(nome='Tempo Leitura Dataset')
 convertToDataFrameTimer = ct.Timer(nome='Tempo Conversão Array to CUDF')
