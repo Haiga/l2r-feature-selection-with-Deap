@@ -25,8 +25,8 @@ PARAMS = None
 METHOD = 'spea2'  # 'nsga2'
 DATASET = 'web10k'
 NUM_FOLD = '1'
-SINTETIC = True
-sparse = False
+SINTETIC = False
+sparse = True
 
 if DATASET == '2003_td_dataset':
     NUM_GENES = 64
