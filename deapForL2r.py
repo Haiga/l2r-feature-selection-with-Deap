@@ -14,9 +14,9 @@ import controlTime as ct
 import readSintetic
 
 # NUM_INDIVIDUOS = 75  # 50
-NUM_INDIVIDUOS = 5  # 50
+NUM_INDIVIDUOS = 75  # 50
 # NUM_GENERATIONS = 50  # 50
-NUM_GENERATIONS = 5  # 50
+NUM_GENERATIONS = 50  # 50
 NUM_GENES = None
 # PARAMS = ['precision', 'risk', 'feature']
 # PARAMS = ['precision', 'trisk', 'feature']
@@ -87,7 +87,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
     readResultTimer.start()
     # NOME_COLECAO_BASE = './resultados_trisk/' + DATASET + '-Fold' + NUM_FOLD + '-base.json'
 
-    NOME_COLECAO_BASE = './resultados/' + DATASET + '-Fold' + NUM_FOLD + '.json'
+    NOME_COLECAO_BASE = './resultadosservidor/' + DATASET + '-Fold' + NUM_FOLD + '.json'
     COLECAO_BASE = {}
 
     try:
@@ -161,7 +161,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
         else:
             result = evaluateIndividuoSerial.getEval(individuo_ga, NUM_GENES, X_train, y_train, X_test, y_test,
                                                      query_id_train,
-                                                     ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM)
+                                                     ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM, PARAMS)
             COLECAO_BASE[individuo_ga] = {}
             COLECAO_BASE[individuo_ga][str_params] = True
             if 'precision' in PARAMS:
