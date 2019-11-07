@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import model_selection
 
 
-def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
+def getEval2(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
             DATASET, METRIC, NUM_FOLD, ALGORITHM, PARAMS):
     evaluation = []
     ndcg, queries = getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train,
@@ -29,7 +29,7 @@ def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_tra
 
     return evaluation
 
-def getEval2(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
+def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
             DATASET, METRIC, NUM_FOLD, ALGORITHM, PARAMS):
     evaluation = []
     
