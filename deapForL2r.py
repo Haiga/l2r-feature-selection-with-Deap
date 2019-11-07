@@ -134,6 +134,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
                 evaluation.append(NUM_GENES)
             if 'trisk' in PARAMS:
                 evaluation.append(0)
+            if 'novelty' in PARAMS:
+                evaluation.append(0)
+            if 'diversity' in PARAMS:
+                evaluation.append(0)
         elif individuo_ga in COLECAO_BASE:
             COLECAO_BASE[individuo_ga][str_params] = True
             if 'precision' in PARAMS:
@@ -144,6 +148,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
                 evaluation.append(COLECAO_BASE[individuo_ga]['feature'])
             if 'trisk' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['trisk'])
+            if 'novelty' in PARAMS:
+                evaluation.append(COLECAO_BASE[individuo_ga]['novelty'])
+            if 'diversity' in PARAMS:
+                evaluation.append(COLECAO_BASE[individuo_ga]['diversity'])
 
             flag = False
             if METHOD == "nsga2" and COLECAO_BASE[individuo_ga]['method'] == 2:
@@ -172,6 +180,10 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
                 COLECAO_BASE[individuo_ga]['feature'] = result[2]
             if 'trisk' in PARAMS:
                 COLECAO_BASE[individuo_ga]['trisk'] = result[3]
+            if 'novelty' in PARAMS:
+                COLECAO_BASE[individuo_ga]['novelty'] = result[4]
+            if 'diversity' in PARAMS:
+                COLECAO_BASE[individuo_ga]['diversity'] = result[5]
             #
             #
             COLECAO_BASE[individuo_ga]['geracao_s'] = current_generation_s
@@ -189,7 +201,11 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
                 evaluation.append(result[2])
             if 'trisk' in PARAMS:
                 evaluation.append(result[3])
-
+            if 'novelty' in PARAMS:
+                evaluation.append(result[4])
+            if 'diversity' in PARAMS:
+                evaluation.append(result[5])
+                
         avaliarTimer.stop()
         return evaluation
 
