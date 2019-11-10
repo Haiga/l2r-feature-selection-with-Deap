@@ -246,7 +246,7 @@ def disc(k):
 
 
 def p(listUsersEvaluateI, lengthU):
-    return len(listUsersEvaluateI.tolist()) / lengthU
+    return 1 / lengthU
 
 
 def getNovelty(score, label, listU):
@@ -285,7 +285,7 @@ def disclk(l, k):
 
 
 def d(Ui, Uj):
-    lenIntersect = len(Ui.tolist())
+    lenIntersect = 1
     produtoRaizLenConjuntos = math.sqrt(len(Ui)) * math.sqrt(len(Uj))
     return (1 - lenIntersect) / produtoRaizLenConjuntos
 
