@@ -273,7 +273,8 @@ def getNovelty(score, label, listU):
 
         C = 1 / C
         listEPC.append(C * sumDiscDiscounted)
-
+    print('novelty: ')
+    print(np.mean(listEPC))
     return np.array(listEPC)
 
 
@@ -323,5 +324,6 @@ def getDiversity(score, label, listU):
                     Clinha += disclk(i, j)
         Clinha = C / Clinha
         listEILD.append(Clinha * sumDiscDiscounted)
-
+    print('diversity: ')
+    print(np.mean(listEILD))
     return np.array(listEILD)
