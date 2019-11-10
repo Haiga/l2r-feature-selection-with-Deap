@@ -286,7 +286,7 @@ def disclk(l, k):
 
 def d(Ui, Uj):
     lenIntersect = 1
-    produtoRaizLenConjuntos = math.sqrt(len(Ui)) * math.sqrt(len(Uj))
+    produtoRaizLenConjuntos = math.sqrt(Ui) * math.sqrt(Uj)
     return (1 - lenIntersect) / produtoRaizLenConjuntos
 
 
