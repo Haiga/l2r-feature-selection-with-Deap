@@ -265,7 +265,7 @@ def getNovelty(score, label, listU):
         lengthScore2 = len(matUser)
         sumDiscDiscounted = 0
         for k in range(lengthScore2):
-            sumDiscDiscounted += disc(k) * (1 - p(R[k][1], lengthU))
+            sumDiscDiscounted += disc(k) * (1 - p(R[k][0], lengthU))
 
         C = 0
         for k in range(lengthScore2):
@@ -308,7 +308,7 @@ def getDiversity(score, label, listU):
         for i in range(lengthScore2):
             for j in range(lengthScore2):
                 if i != j:
-                    sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][1], R[j][1])  ##
+                    sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][0], R[j][0])  ##
 
         C = 0
         for k in range(lengthScore2):
