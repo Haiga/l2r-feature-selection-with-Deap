@@ -262,13 +262,13 @@ def getNovelty(score, label, listU):
 
         matUser = mat[user]
         R = matUser[np.argsort(-matUser[:, 0], kind="mergesort")]
-
+        lengthScore2 = len(matUser)
         sumDiscDiscounted = 0
-        for k in range(lengthScore):
+        for k in range(lengthScore2):
             sumDiscDiscounted += disc(k) * (1 - p(R[k][1], lengthU))
 
         C = 0
-        for k in range(lengthScore):
+        for k in range(lengthScore2):
             C += disc(k)
 
         C = 1 / C
@@ -303,15 +303,15 @@ def getDiversity(score, label, listU):
 
         matUser = mat[user]
         R = matUser[np.argsort(-matUser[:, 0], kind="mergesort")]
-
+        lengthScore2 = len(matUser)
         sumDiscDiscounted = 0
-        for i in range(lengthScore):
-            for j in range(lengthScore):
+        for i in range(lengthScore2):
+            for j in range(lengthScore2):
                 if i != j:
                     sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][1], R[j][1])  ##
 
         C = 0
-        for k in range(lengthScore):
+        for k in range(lengthScore2):
             C += disc(k)
 
         C = 1 / C
