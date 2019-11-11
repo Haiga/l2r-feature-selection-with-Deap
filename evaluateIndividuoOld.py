@@ -10,7 +10,8 @@ def getEval(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_tra
                                            ENSEMBLE, NTREES, SEED, DATASET,
                                            METRIC)
     if 'precision' in PARAMS:
-        evaluation.append(queries)
+        #evaluation.append(queries)
+        evaluation.append(ndcg)
     else:
         evaluation.append(0)
     # evaluation.append(ndcg)
