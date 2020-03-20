@@ -1,3 +1,4 @@
+import controlTime
 import l2rCodesSerial
 import numpy as np
 from sklearn import model_selection
@@ -246,7 +247,7 @@ def disc(k):
 
 
 def p(listUsersEvaluateI, lengthU):
-    return 1 / lengthU
+    return listUsersEvaluateI / lengthU
 
 
 def getNovelty(score, label, listU):
@@ -265,7 +266,8 @@ def getNovelty(score, label, listU):
         lengthScore2 = len(matUser)
         sumDiscDiscounted = 0
         for k in range(lengthScore2):
-            sumDiscDiscounted += disc(k) * (1 - p(R[k][0], lengthU))
+            # sumDiscDiscounted += disc(k) * (1 - p(R[k][0], lengthU))
+            sumDiscDiscounted += disc(k) * (1 - p(score[k], lengthU)) * score[k]
 
         C = 0
         for k in range(lengthScore2):
@@ -273,8 +275,11 @@ def getNovelty(score, label, listU):
 
         C = 1 / C
         listEPC.append(C * sumDiscDiscounted)
-    print('novelty: ')
-    print(np.mean(listEPC))
+        # cont -= 1
+        # if cont <= 0:
+        #     break
+    print('novelty: ' + str(np.mean(listEPC)))
+    # print(np.mean(listEPC))
     return np.array(listEPC)
 
 
@@ -285,10 +290,10 @@ def disclk(l, k):
         return disc(l - k)
 
 
-def d(Ui, Uj):
-    lenIntersect = 1
+def d(Ui, Uj, dif=1):
+
     produtoRaizLenConjuntos = math.sqrt(Ui) * math.sqrt(Uj)
-    return (1 - lenIntersect) / produtoRaizLenConjuntos
+    return dif / produtoRaizLenConjuntos
 
 
 def getDiversity(score, label, listU):
@@ -300,30 +305,48 @@ def getDiversity(score, label, listU):
     mat = (np.vstack((np.reshape(score, -1), np.reshape(lineNum, -1)))).T
 
     listEILD = []
+    t1 = controlTime.Timer()
+    t2 = controlTime.Timer()
+    cont = 10
     for user in listUsers:
 
         matUser = mat[user]
         R = matUser[np.argsort(-matUser[:, 0], kind="mergesort")]
         lengthScore2 = len(matUser)
         sumDiscDiscounted = 0
+        # print('inside for 1')
+
+        # t1.start()
         for i in range(lengthScore2):
             for j in range(lengthScore2):
                 if i != j:
-                    sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][0], R[j][0])  ##
+                    sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][0], R[j][0], abs(len(listUsers[i]) - len(listUsers[j])))  ##
 
+
+        # t1.stop()
+        # t1.getInfo()
         C = 0
         for k in range(lengthScore2):
             C += disc(k)
 
         C = 1 / C
 
+        # t2.start()
         Clinha = 0
-        for i in range(lengthScore):
-            for j in range(lengthScore):
+        for i in range(lengthScore2):
+            for j in range(lengthScore2):
                 if i != j:
                     Clinha += disclk(i, j)
-        Clinha = C / Clinha
+        if Clinha != 0:
+            Clinha = C / Clinha
+        else:
+            Clinha = 0
+        # t2.stop()
+        # t2.getInfo()
         listEILD.append(Clinha * sumDiscDiscounted)
-    print('diversity: ')
-    print(np.mean(listEILD))
+        cont -= 1
+        if cont <= 0:
+            break
+    print('diversity: ' + str(np.mean(listEILD)))
+    # print(np.mean(listEILD))
     return np.array(listEILD)

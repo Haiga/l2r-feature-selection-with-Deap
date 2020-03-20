@@ -10,11 +10,13 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.datasets import load_svmlight_file
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.neural_network import MLPRegressor
 import math
 import time
 from scipy.stats import norm
 # from cuml import LinearRegression as cuLinearRegression
 from scipy import stats
+from sklearn import svm
 
 def load_L2R_file(TRAIN_FILE_NAME, MASK, sparse=False):
     nLines = 0
@@ -37,11 +39,13 @@ def load_L2R_file(TRAIN_FILE_NAME, MASK, sparse=False):
     if len(MASK) == 136:
         web10k = True
     for line in trainFile:
+        line = line.replace('  ', ' ')
         if web10k:
             m = re.search(r"(\d)\sqid:(\d+)\s(.*)\s#.*", line[:-1]+"#docid = G21-63-2483329\n")
         else:
             m = re.search(r"(\d)\sqid:(\d+)\s(.*)\s#.*", line)
-
+        if m is None:
+            m = re.search(r"(\d)\sqid:(\d+)\s(.*)#.*", line)
         featuresList = (re.sub(r"\d*:", "", m.group(3))).split(" ")
         if sparse:
             numFeaturesList = (re.sub(r":.?[0-9]+.?[0-9]+\s", " ", m.group(3) + " ")).split(" ")
@@ -51,9 +55,18 @@ def load_L2R_file(TRAIN_FILE_NAME, MASK, sparse=False):
         colAllFeat = 0
         colSelFeat = 0
         for i in featuresList:
+            # try:
+            #     maskList[colAllFeat]
+            # except:
+            #     pass
             if maskList[colAllFeat] == "1":
                 if sparse:
-                    x_train[iL][int(numFeaturesList[colAllFeat]) - 1] = float(i)
+                    # x_train[iL][int(numFeaturesList[colAllFeat]) - 1] = float(i)
+                    x_train[iL][colSelFeat] = float(i)
+                    # try:
+                    #     x_train[iL][colSelFeat] = float(i)
+                    # except Exception as inst:
+                    #     print('')
                 else:
                     x_train[iL][colSelFeat] = float(i)
                 colSelFeat = colSelFeat + 1
@@ -168,6 +181,8 @@ def getEvaluation(score, listQ, label, trainFile, metric, resultPrefix):
         dataset = "web10k"
     elif "bibsonomy" in trainFile:
         dataset = "web10k"
+    elif "mv600" in trainFile:
+        dataset = "web10k"
     else:
         print("There is no evaluation to this dataset, dataFile: ", trainFile)
         exit(0)
@@ -201,6 +216,7 @@ def getEvaluation(score, listQ, label, trainFile, metric, resultPrefix):
         for predic in ndcgQueries:
             MAP = MAP + predic
 
+    print('ndcg: ' + str(MAP / idQ))
     return MAP / idQ, ndcgQueries
     # return ndcgQueries, apQueries
 
@@ -292,6 +308,12 @@ def getTheModel(ensemble, ntrees, frate, seed, coll):
 
     if ensemble == 5:
         clf = DecisionTreeRegressor(random_state=seed)
+
+    if ensemble == 6:
+        clf = svm.SVR(verbose=True, max_iter=100)
+
+    if ensemble == 7:
+        clf = MLPRegressor(hidden_layer_sizes=(20, ), max_iter=20, verbose=True)
 
     if ensemble == 10:
         if "200" in coll:

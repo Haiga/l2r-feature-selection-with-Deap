@@ -14,9 +14,13 @@ import controlTime as ct
 import readSintetic
 
 # NUM_INDIVIDUOS = 75  # 50
-NUM_INDIVIDUOS = 75  # 50
+# NUM_INDIVIDUOS = 10  # 50
+# NUM_INDIVIDUOS = 8  # 50
+NUM_INDIVIDUOS = 30  # 50
 # NUM_GENERATIONS = 50  # 50
-NUM_GENERATIONS = 50  # 50
+# NUM_GENERATIONS = 10  # 50
+# NUM_GENERATIONS = 8  # 50
+NUM_GENERATIONS = 30  # 50
 NUM_GENES = None
 # PARAMS = ['precision', 'risk', 'feature']
 # PARAMS = ['precision', 'trisk', 'feature']
@@ -36,6 +40,9 @@ elif DATASET == 'yahoo':
     NUM_GENES = 700
 elif DATASET in ['movielens', 'lastfm', 'bibsonomy', 'youtube']:
     NUM_GENES = 13
+    sparse = True
+elif DATASET in ['mv600']:
+    NUM_GENES = 613
     sparse = True
 else:
     print('DATASET INVÁLIDO')
@@ -72,7 +79,9 @@ persistFinalResultTimer = ct.Timer(nome='Tempo Para Persistir Dados no Final da 
 def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
     readFilesTimer.start()
     X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
-        './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES, sparse)
+        './dataset/' + DATASET + '/' + NUM_FOLD + '.train', '1' * NUM_GENES, sparse)
+    # X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
+    #     './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'train' + '.txt', '1' * NUM_GENES, sparse)
     # X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
     #     './dataset/' + DATASET + '/Fold' + NUM_FOLD + '/Norm.' + 'test' + '.txt', '1' * NUM_GENES, sparse)
     X_test, y_test, query_id_test = None, None, None
@@ -87,7 +96,11 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
     readResultTimer.start()
     # NOME_COLECAO_BASE = './resultados_trisk/' + DATASET + '-Fold' + NUM_FOLD + '-base.json'
 
-    NOME_COLECAO_BASE = './resultadosservidor/' + DATASET + '-Fold' + NUM_FOLD + '.json'
+    str_params = 'obj_'
+    for param in PARAMS:
+        str_params += param
+
+    NOME_COLECAO_BASE = './r1/' + DATASET + '-Fold' + NUM_FOLD + str_params + '.json'
     COLECAO_BASE = {}
 
     try:
@@ -114,10 +127,6 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
 
     current_generation_s = 1
     current_generation_n = 1
-
-    str_params = 'obj_'
-    for param in PARAMS:
-        str_params += param
 
     def evalIndividuo(individual):
         avaliarTimer.start()
@@ -169,7 +178,8 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
         else:
             result = evaluateIndividuoSerial.getEval(individuo_ga, NUM_GENES, X_train, y_train, X_test, y_test,
                                                      query_id_train,
-                                                     ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM, PARAMS)
+                                                     ENSEMBLE, NTREES, SEED, DATASET, METRIC, NUM_FOLD, ALGORITHM,
+                                                     PARAMS)
             COLECAO_BASE[individuo_ga] = {}
             COLECAO_BASE[individuo_ga][str_params] = True
             if 'precision' in PARAMS:
@@ -205,7 +215,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
                 evaluation.append(result[4])
             if 'diversity' in PARAMS:
                 evaluation.append(result[5])
-                
+
         avaliarTimer.stop()
         return evaluation
 
@@ -344,7 +354,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
     str_params = ''
     for param in PARAMS:
         str_params += param
-    with open("./logs/result" + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
+    with open("./r2/" + DATASET + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
         json.dump(log_json, fp)
 
     persistFinalResultTimer.start()
@@ -377,7 +387,7 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
         13: persistFinalResultTimer.getInfo()
     }
 
-    with open("./info/result" + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
+    with open("./r3/" + DATASET + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
         json.dump(timerInformations, fp)
 
     # %cd /content/tcc_l2r/logs
