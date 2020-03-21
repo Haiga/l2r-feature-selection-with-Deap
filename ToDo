@@ -1,2 +1,6 @@
 #Todo remover comentários não utilizados, atualizar a documentação e remover arquivos repeditos
 #Todo refatorar o código
+#Todo adicionar as informações relativas à descrição das métricas
+#Todo alterar o formato de salvar os aquivos
+#Todo Adicionar argumentos para facilitar a chamada dos métodos
+#Todo mudar para projeto python, infomando dependências e manual de instalação

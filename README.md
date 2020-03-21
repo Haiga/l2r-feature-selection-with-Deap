@@ -1,6 +1,6 @@
 # Feature Selection for Learning To Rank with Multi Objective Genetic Algorithms
 
-Códigos para feature selection, utilizando algoritmos genéticos em contexto de Aprendizagem de Ranqueamento
+Códigos para feature selection, utilizando algoritmos genéticos em contexto de Aprendizagem de Ranqueamento (Recomendação está em desenvolvimento)
 
 
 ## Datasets
@@ -15,6 +15,15 @@ Códigos para feature selection, utilizando algoritmos genéticos em contexto de
 * [cuML](https://github.com/rapidsai/cuml) - RAPIDS Machine Learning Library 
 * [cuDF](https://github.com/rapidsai/cudf) - GPU DataFrame Library
 * [scikit-learn](https://github.com/scikit-learn/scikit-learn) - Machine Learning in Python
+
+## Some Metrics:
+
+* [TRisk]() - para Risco
+* [Georisk]()  - para Risco
+* [NDCG]() - para Efitividade
+* [MAP]() - para Efitividade
+* [EPC]() - para Novidade
+* [EILD]() - para Diversidade
 
 
 ## Configuration
