@@ -4,3 +4,9 @@
 #Todo alterar o formato de salvar os aquivos
 #Todo Adicionar argumentos para facilitar a chamada dos métodos
 #Todo mudar para projeto python, infomando dependências e manual de instalação
+
+#Todo exception
+#Todo se name = main
+#Todo nome de variável na memória
+#Todo traceback
+#Todo usar Hash para indexar os arquivos função set()
