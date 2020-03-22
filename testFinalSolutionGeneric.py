@@ -22,10 +22,19 @@ DATASETS = ['mv600']
 NUM_FEATURES = 613
 params = ['diversityprecision', 'noveltydiversity', 'noveltydiversityprecision', 'noveltyprecision']
 full = '1' * NUM_FEATURES
+# 6 is for SVM
+# 7 is for MLP
+# 1 is for RF
+ENSEMBLES = [1, 6, 7]
+NTREES = 2
+SEED = 1887
+NUM_FOLD = '0'
+METRIC = "NDCG"
+sparse = True
+ALGORITHM = 'rf'
 
 for dataset in DATASETS:
     for param in params:
-
         NOME_COLECAO_BASE = './22-03/r1/' + dataset + '-Fold' + '0obj_' + param + '.json'
         COLECAO_BASE = {}
 
@@ -77,106 +86,92 @@ for dataset in DATASETS:
 
         print(param + ' ' + dataset + 'bestIndSpea:' + bestindSPEA)
         print(param + ' ' + dataset + 'bestIndNSGA:' + bestindNSGA)
+
+        print('reading and training NSGA bestind ensemble ' + str(ENSEMBLE))
+        nX_train, ny_train, nquery_id_train = l2rCodesSerial.load_L2R_file(
+            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'train', bestindNSGA, sparse)
+        nX_test, ny_test, nquery_id_test = l2rCodesSerial.load_L2R_file(
+            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'test', bestindNSGA, sparse)
+
+        print('reading and training SPEA bestind ensemble ' + str(ENSEMBLE))
+        sX_train, sy_train, squery_id_train = l2rCodesSerial.load_L2R_file(
+            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'train', bestindSPEA, sparse)
+        sX_test, sy_test, squery_id_test = l2rCodesSerial.load_L2R_file(
+            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'test', bestindSPEA, sparse)
+
+        print('reading and training FULL ensemble ' + str(ENSEMBLE))
+        fX_train, fy_train, fquery_id_train = l2rCodesSerial.load_L2R_file(
+            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'train', full, sparse)
+        fX_test, fy_test, fquery_id_test = l2rCodesSerial.load_L2R_file(
+            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'test', full, sparse)
+
         # model = RF
         diversitys = []
         noveltys = []
         ndcgs = []
 
-        # NSGA best IND RF
-        # 6 is for SVM
-        # 7 is for MLP
-        # x is for RF
-        ENSEMBLE = 7  #
-        NTREES = 2
-        SEED = 1887
-        NUM_FOLD = '0'
-        METRIC = "NDCG"
-        sparse = True
-        ALGORITHM = 'rf'
-        print('reading and training NSGA bestind')
-        X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
-            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'train', bestindNSGA, sparse)
-        X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
-            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'test', bestindNSGA, sparse)
-        # print(len(X_train[0]))
+        for ENSEMBLE in ENSEMBLES:
 
-        model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, dataset)
-        model.fit(X_train, y_train)
-        resScore = model.predict(X_test)
+            #
+            # NSGA BEST IND ###
+            #
 
-        scoreTest = [0] * len(y_test)
-        c = 0
-        for i in resScore:
-            scoreTest[c] = i
-            c = c + 1
+            model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, dataset)
+            model.fit(nX_train, ny_train)
+            resScore = model.predict(nX_test)
 
-        ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
-        ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+            scoreTest = [0] * len(ny_test)
+            c = 0
+            for i in resScore:
+                scoreTest[c] = i
+                c = c + 1
 
-        # SPEA best IND RF
-        print('reading and training SPEA bestind')
-        X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
-            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'train', bestindSPEA, sparse)
-        X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
-            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'test', bestindSPEA, sparse)
-        # print(len(X_train[0]))
+            ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, nquery_id_test, ny_test, dataset, METRIC, "test")
+            ndcgs.append(queries)
+            diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, ny_test, nquery_id_test))
+            noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, ny_test, nquery_id_test))
 
-        model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, dataset)
-        model.fit(X_train, y_train)
-        resScore = model.predict(X_test)
+            #
+            # SPEA BEST IND ###
+            #
 
-        scoreTest = [0] * len(y_test)
-        c = 0
-        for i in resScore:
-            scoreTest[c] = i
-            c = c + 1
+            model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, dataset)
+            model.fit(sX_train, sy_train)
+            resScore = model.predict(sX_test)
 
-        ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
-        ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+            scoreTest = [0] * len(sy_test)
+            c = 0
+            for i in resScore:
+                scoreTest[c] = i
+                c = c + 1
 
-        # FULL best IND RF
-        print('reading and training FULL')
-        X_train, y_train, query_id_train = l2rCodesSerial.load_L2R_file(
-            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'train', full, sparse)
-        X_test, y_test, query_id_test = l2rCodesSerial.load_L2R_file(
-            './dataset/' + dataset + '/' + NUM_FOLD + '.' + 'test', full, sparse)
-        # print(len(X_train[0]))
+            ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, squery_id_test, sy_test, dataset, METRIC, "test")
+            ndcgs.append(queries)
+            diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, sy_test, squery_id_test))
+            noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, sy_test, squery_id_test))
 
-        model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, dataset)
-        model.fit(X_train, y_train)
-        resScore = model.predict(X_test)
+            #
+            # FULL FEATURES ###
+            #
 
-        scoreTest = [0] * len(y_test)
-        c = 0
-        for i in resScore:
-            scoreTest[c] = i
-            c = c + 1
+            model = l2rCodesSerial.getTheModel(ENSEMBLE, NTREES, 0.3, SEED, dataset)
+            model.fit(fX_train, fy_train)
+            resScore = model.predict(fX_test)
 
-        ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
-        ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+            scoreTest = [0] * len(fy_test)
+            c = 0
+            for i in resScore:
+                scoreTest[c] = i
+                c = c + 1
 
-        # model = RN
-        # diversitys.append(getDiversity(bestNSGA))
-        # diversitys.append(getDiversity(bestSPEA))
-        # diversitys.append(getDiversity(full))
-        #
-        # noveltys.append(getNovelty(bestNSGA))
-        # noveltys.append(getNovelty(bestSPEA))
-        # noveltys.append(getNovelty(full))
-        #
-        # ndcgs.append(getNdcg(bestNSGA))
-        # ndcgs.append(getNdcg(bestSPEA))
-        # ndcgs.append(getNdcg(full))
+            ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, fquery_id_test, fy_test, dataset, METRIC, "test")
+            ndcgs.append(queries)
+            diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, fy_test, fquery_id_test))
+            noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, fy_test, fquery_id_test))
 
         print('Start Comparison:')
         # num = 6
-        num = 3
+        num = 3 * len(ENSEMBLES)
         for i in range(num):
             for j in range(num):
                 if j > i:
@@ -191,3 +186,23 @@ for dataset in DATASETS:
             for j in range(num):
                 if j > i:
                     print(compare(ndcgs[i], ndcgs[j]))
+
+# Será feita uma comparação na seguinte ordem:
+# Primeiro se compara a diversidade
+# NSGA - SPEA - ENSEMBLE 1
+# NSGA - FULL - ENSEMBLE 1
+# NSGA - NSGA - ENSEMBLE 2
+# NSGA - SPEA - ENSEMBLE 2
+# NSGA - FULL - ENSEMBLE 2
+# NSGA - NSGA - ENSEMBLE n
+# NSGA - SPEA - ENSEMBLE n
+# NSGA - FULL - ENSEMBLE n
+# SPEA - FULL - ENSEMBLE 1
+# SPEA - NSGA - ENSEMBLE 2
+# SPEA - SPEA - ENSEMBLE 2
+# SPEA - FULL - ENSEMBLE 2
+# SPEA - NSGA - ENSEMBLE n
+# SPEA - SPEA - ENSEMBLE n
+# SPEA - FULL - ENSEMBLE n
+# Segundo se compara a novidade, seguindo esse mesma ordem em cima
+# Terceiro se compara a efetividade, seguindo esse mesma ordem em cima
