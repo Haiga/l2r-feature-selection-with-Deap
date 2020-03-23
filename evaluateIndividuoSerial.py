@@ -60,9 +60,10 @@ def getWeights(params):
 def getPrecision(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train, ENSEMBLE, NTREES, SEED,
                  DATASET,
                  METRIC):
-    ndcg, queries, scoreTrain = getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_test, query_id_train,
-                                           ENSEMBLE, NTREES, SEED, DATASET,
-                                           METRIC)
+    ndcg, queries, scoreTrain = getPrecisionAndQueries(individuo, NUM_GENES, X_train, y_train, X_test, y_test,
+                                                       query_id_train,
+                                                       ENSEMBLE, NTREES, SEED, DATASET,
+                                                       METRIC)
     return ndcg
 
 
@@ -195,6 +196,8 @@ def disc(k):
 
 def p(listUsersEvaluateI, lengthU):
     return listUsersEvaluateI / lengthU
+
+
 # def p2(i, u):
 #     return (pow(2, g(u, i)) - 1)/(pow(2, ))
 
@@ -297,3 +300,39 @@ def getDiversity(score, label, listU):
     # print('diversity: ')
     # print(np.mean(listEILD))
     return np.array(listEILD)
+
+
+def getHashUserRec(scores, listU):
+    hashUser = {}
+    for i, score in enumerate(scores):
+        if listU[i] not in hashUser:
+            hashUser[listU[i]] = []
+        hashUser[listU[i]].append(score)
+    return hashUser
+
+
+def getUsers(listU):
+    users = []
+    for user in listU:
+        if user not in users:
+            users.append(user)
+    return users
+
+
+def getNoveltyPRO(scores, label, listU):
+    listUsers = getUsers(listU)
+    hashUserRec = getHashUserRec(scores, listU)
+    numero_users = len(listUsers)
+    listEPC = []
+    for user in listUsers:
+        num_recommendations = len(hashUserRec[user])
+        soma = 0
+        ordered_rec = sorted(hashUserRec[user])
+        for k in range(num_recommendations):
+            soma += disc(k + 1) * (1 - 1 / numero_users) * ordered_rec[k]
+        C = 0
+        for k in range(num_recommendations):
+            C += disc(k + 1)
+        listEPC.append((1 / C) * soma)
+    print('novelty: %s' % (np.mean(listEPC)))
+    return np.array(listEPC)
