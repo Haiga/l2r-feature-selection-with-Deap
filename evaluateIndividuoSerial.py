@@ -201,7 +201,7 @@ def p(listUsersEvaluateI, lengthU):
 # def p2(i, u):
 #     return (pow(2, g(u, i)) - 1)/(pow(2, ))
 
-def getNovelty(score, label, listU):
+def getNovelty2(score, label, listU):
     listUsers = getQueries(listU)
     lengthU = len(listUsers)
     lengthScore = len(score)
@@ -319,20 +319,28 @@ def getUsers(listU):
     return users
 
 
-def getNoveltyPRO(scores, label, listU):
+# import time
+def getNovelty(scores, label, listU):
     listUsers = getUsers(listU)
     hashUserRec = getHashUserRec(scores, listU)
     numero_users = len(listUsers)
     listEPC = []
+    # s = time.time()
     for user in listUsers:
         num_recommendations = len(hashUserRec[user])
         soma = 0
         ordered_rec = sorted(hashUserRec[user])
+        # print(max(ordered_rec))
+        # print(ordered_rec[0])
         for k in range(num_recommendations):
-            soma += disc(k + 1) * (1 - 1 / numero_users) * ordered_rec[k]
+            # soma += disc(k + 1) * (1 - 1 / numero_users) * ordered_rec[k]
+
+            soma += disc(k + 1) * (1 - 1 / numero_users) * (pow(2, ordered_rec[k] - 1) / pow(2, max(ordered_rec)))
         C = 0
         for k in range(num_recommendations):
             C += disc(k + 1)
         listEPC.append((1 / C) * soma)
-    print('novelty: %s' % (np.mean(listEPC)))
+    # print('novelty: %s' % (np.mean(listEPC)))
+    # e = time.time()
+    # print('time: %ss' % (e - s))
     return np.array(listEPC)
