@@ -85,8 +85,8 @@ for dataset in DATASETS:
         # NSGA best IND RF
         # 6 is for SVM
         # 7 is for MLP
-        # x is for RF
-        ENSEMBLE = 7  #
+        # 1 is for RF
+        ENSEMBLE = 1  #
         NTREES = 2
         SEED = 1887
         NUM_FOLD = '0'
@@ -175,8 +175,13 @@ for dataset in DATASETS:
         # ndcgs.append(getNdcg(full))
 
         print('Start Comparison:')
-        # num = 6
+        # num = 3
         num = 3
+        for i in range(num):
+            for j in range(num):
+                if j > i:
+                    print(compare(ndcgs[i], ndcgs[j]))
+
         for i in range(num):
             for j in range(num):
                 if j > i:
@@ -187,7 +192,4 @@ for dataset in DATASETS:
                 if j > i:
                     print(compare(noveltys[i], noveltys[j]))
 
-        for i in range(num):
-            for j in range(num):
-                if j > i:
-                    print(compare(ndcgs[i], ndcgs[j]))
+

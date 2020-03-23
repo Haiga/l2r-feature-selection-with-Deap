@@ -175,6 +175,12 @@ for dataset in DATASETS:
         for i in range(num):
             for j in range(num):
                 if j > i:
+                    print(compare(ndcgs[i], ndcgs[j]))
+
+
+        for i in range(num):
+            for j in range(num):
+                if j > i:
                     print(compare(diversitys[i], diversitys[j]))
 
         for i in range(num):
@@ -182,10 +188,6 @@ for dataset in DATASETS:
                 if j > i:
                     print(compare(noveltys[i], noveltys[j]))
 
-        for i in range(num):
-            for j in range(num):
-                if j > i:
-                    print(compare(ndcgs[i], ndcgs[j]))
 
 # Será feita uma comparação na seguinte ordem:
 # Primeiro se compara a diversidade
