@@ -26,7 +26,7 @@ full = '1' * NUM_FEATURES
 # 7 is for MLP
 # 1 is for RF
 ENSEMBLES = [1, 6, 7]
-NTREES = 2
+NTREES = 20
 SEED = 1887
 NUM_FOLD = '0'
 METRIC = "NDCG"

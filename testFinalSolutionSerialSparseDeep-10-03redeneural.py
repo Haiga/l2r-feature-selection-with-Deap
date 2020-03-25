@@ -95,7 +95,7 @@ for dataset in DATASETS:
 
         # NSGA best IND RF
         ENSEMBLE = 1  # random forest
-        NTREES = 2
+        NTREES = 20
         SEED = 1887
         NUM_FOLD = '0'
         METRIC = "NDCG"

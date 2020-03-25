@@ -11,7 +11,7 @@ for i in best:
     sbest += str(i)
 DATASET = 'web10k'
 ENSEMBLE = 1  # random forest
-NTREES = 300
+NTREES = 20
 SEED = 1887
 NUM_FOLD = '1'
 METRIC = "NDCG"

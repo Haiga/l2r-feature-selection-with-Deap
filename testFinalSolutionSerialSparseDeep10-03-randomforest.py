@@ -86,8 +86,8 @@ for dataset in DATASETS:
         # 6 is for SVM
         # 7 is for MLP
         # 1 is for RF
-        ENSEMBLE = 1  #
-        NTREES = 2
+        ENSEMBLE = 6  #
+        NTREES = 20
         SEED = 1887
         NUM_FOLD = '0'
         METRIC = "NDCG"
