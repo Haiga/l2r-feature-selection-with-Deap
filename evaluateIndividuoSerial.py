@@ -201,7 +201,7 @@ def p(listUsersEvaluateI, lengthU):
 # def p2(i, u):
 #     return (pow(2, g(u, i)) - 1)/(pow(2, ))
 
-def getNovelty2(score, label, listU):
+def getNovelty(score, label, listU):
     listUsers = getQueries(listU)
     lengthU = len(listUsers)
     lengthScore = len(score)
@@ -320,7 +320,7 @@ def getUsers(listU):
 
 
 # import time
-def getNovelty(scores, label, listU):
+def getNovelty2(scores, label, listU):
     listUsers = getUsers(listU)
     hashUserRec = getHashUserRec(scores, listU)
     numero_users = len(listUsers)

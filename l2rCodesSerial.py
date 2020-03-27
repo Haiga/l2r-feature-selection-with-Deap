@@ -321,6 +321,9 @@ def getTheModel(ensemble, ntrees, frate, seed, coll):
         else:
             clf = DecisionTreeRegressor(random_state=seed, min_samples_leaf=50, min_samples_split=100, max_depth=6)
 
+    if ensemble == 11:
+        clf = DecisionTreeRegressor(random_state=seed, min_samples_leaf=30, min_samples_split=50, max_depth=3)
+
     return clf
 
 

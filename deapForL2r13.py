@@ -14,13 +14,13 @@ import controlTime as ct
 import readSintetic
 
 # NUM_INDIVIDUOS = 75  # 50
-# NUM_INDIVIDUOS = 10  # 50
-# NUM_INDIVIDUOS = 8  # 50
 NUM_INDIVIDUOS = 20  # 50
+# NUM_INDIVIDUOS = 8  # 50
+# NUM_INDIVIDUOS = 30  # 50
 # NUM_GENERATIONS = 50  # 50
-# NUM_GENERATIONS = 10  # 50
+NUM_GENERATIONS = 10  # 50
 # NUM_GENERATIONS = 8  # 50
-NUM_GENERATIONS = 30  # 50
+# NUM_GENERATIONS = 30  # 50
 NUM_GENES = None
 # PARAMS = ['precision', 'risk', 'feature']
 # PARAMS = ['precision', 'trisk', 'feature']
@@ -54,8 +54,7 @@ NTREES = 1
 SUB_CROSS = 3
 METRIC = 'NDCG'
 # ENSEMBLE = 4  # for regression
-# ENSEMBLE = 5  # for regression tree
-ENSEMBLE = 11  # for regression tree reduzida
+ENSEMBLE = 5  # for regression tree
 ALGORITHM = 'reg'  # for baseline
 # ENSEMBLE = 1  # for regression forest
 ##
