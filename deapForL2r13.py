@@ -136,19 +136,9 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
         for i in range(NUM_GENES):
             individuo_ga += str(individual[i])
         if '1' not in individuo_ga:
-            if 'precision' in PARAMS:
-                evaluation.append(0)
-            if 'risk' in PARAMS:
-                evaluation.append(0)
-            if 'feature' in PARAMS:
-                evaluation.append(NUM_GENES)
-            if 'trisk' in PARAMS:
-                evaluation.append(0)
-            if 'novelty' in PARAMS:
-                evaluation.append(0)
-            if 'diversity' in PARAMS:
-                evaluation.append(0)
-        elif individuo_ga in COLECAO_BASE:
+            individuo_ga = '1' + individuo_ga[1:]
+
+        if individuo_ga in COLECAO_BASE:
             COLECAO_BASE[individuo_ga][str_params] = True
             if 'precision' in PARAMS:
                 evaluation.append(COLECAO_BASE[individuo_ga]['precision'])
