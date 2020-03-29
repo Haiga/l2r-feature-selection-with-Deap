@@ -212,11 +212,12 @@ def getEvaluation(score, listQ, label, trainFile, metric, resultPrefix):
         # print "NDCG", ndcgQueries[idQ]
         idQ += 1
 
-    if "NDCG" in metric or "ndcg" in metric:
+    # if "NDCG" in metric or "ndcg" in metric:
+    if True:
         for predic in ndcgQueries:
             MAP = MAP + predic
 
-    print('ndcg: ' + str(MAP / idQ))
+    # print('ndcg: ' + str(MAP / idQ))
     return MAP / idQ, ndcgQueries
     # return ndcgQueries, apQueries
 

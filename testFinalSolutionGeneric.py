@@ -1,6 +1,5 @@
 import json
 from rpy2 import robjects
-import evaluateIndividuoOld2
 import evaluateIndividuoSerial
 import l2rCodesSerial
 import numpy as np
@@ -128,8 +127,8 @@ for dataset in DATASETS:
 
             ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, nquery_id_test, ny_test, dataset, METRIC, "test")
             ndcgs.append(queries)
-            diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, ny_test, nquery_id_test))
-            noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, ny_test, nquery_id_test))
+            diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, ny_test, nquery_id_test))
+            noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, ny_test, nquery_id_test))
 
             #
             # SPEA BEST IND ###
@@ -147,8 +146,8 @@ for dataset in DATASETS:
 
             ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, squery_id_test, sy_test, dataset, METRIC, "test")
             ndcgs.append(queries)
-            diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, sy_test, squery_id_test))
-            noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, sy_test, squery_id_test))
+            diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, sy_test, squery_id_test))
+            noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, sy_test, squery_id_test))
 
             #
             # FULL FEATURES ###
@@ -166,8 +165,8 @@ for dataset in DATASETS:
 
             ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, fquery_id_test, fy_test, dataset, METRIC, "test")
             ndcgs.append(queries)
-            diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, fy_test, fquery_id_test))
-            noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, fy_test, fquery_id_test))
+            diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, fy_test, fquery_id_test))
+            noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, fy_test, fquery_id_test))
 
         print('Start Comparison:')
         # num = 6

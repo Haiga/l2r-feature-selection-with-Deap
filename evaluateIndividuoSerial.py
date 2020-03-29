@@ -220,7 +220,7 @@ def getNovelty(score, label, listU):
         for k in range(lengthScore2):
             # sumDiscDiscounted += disc(k) * (1 - p(R[k][0], lengthU))
             # sumDiscDiscounted += disc(k) *p()* (1 - p(score[k], lengthU))
-            sumDiscDiscounted += disc(k) * (1 - p(score[k], lengthU))
+            sumDiscDiscounted += disc(k) * (1 - p(score[k], lengthU)) * score[k]
 
         C = 0
         for k in range(lengthScore2):
