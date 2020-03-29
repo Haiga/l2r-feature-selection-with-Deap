@@ -244,14 +244,14 @@ def disclk(l, k):
 
 
 def d(Ui, Uj, dif=1):
-    produtoRaizLenConjuntos = math.sqrt(Ui) * math.sqrt(Uj)
+    produtoRaizLenConjuntos = math.sqrt(abs(Ui)) * math.sqrt(abs(Uj))
     return dif / produtoRaizLenConjuntos
 
 
 def getDiversity(score, label, listU):
     listUsers = getQueries(listU)
-    lengthU = len(listUsers)
-    lengthScore = len(score)
+    # lengthU = len(listUsers)
+    # lengthScore = len(score)
 
     lineNum = np.array(range(0, len(label)), dtype=int)
     mat = (np.vstack((np.reshape(score, -1), np.reshape(lineNum, -1)))).T
