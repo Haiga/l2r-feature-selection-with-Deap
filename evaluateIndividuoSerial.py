@@ -244,8 +244,8 @@ def disclk(l, k):
 
 
 def d(Ui, Uj, dif=1):
-    print(Ui)
-    print(Uj)
+    # print(Ui)
+    # print(Uj)
     produtoRaizLenConjuntos = math.sqrt(abs(Ui)) * math.sqrt(abs(Uj))
     return dif / produtoRaizLenConjuntos
 
