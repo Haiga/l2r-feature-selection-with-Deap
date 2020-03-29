@@ -231,7 +231,7 @@ def getNovelty(score, label, listU):
         # cont -= 1
         # if cont <= 0:
         #     break
-    # print('novelty: ')
+    print('novelty: ' + str(np.mean(listEPC)))
     # print(np.mean(listEPC))
     return np.array(listEPC)
 
@@ -257,6 +257,7 @@ def getDiversity(score, label, listU):
     mat = (np.vstack((np.reshape(score, -1), np.reshape(lineNum, -1)))).T
 
     listEILD = []
+
     cont = 10
     for user in listUsers:
 
@@ -270,18 +271,15 @@ def getDiversity(score, label, listU):
         for i in range(lengthScore2):
             for j in range(lengthScore2):
                 if i != j:
-                    sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][0], R[j][0],
-                                                                    abs(len(listUsers[i]) - len(listUsers[j])))  ##
+                    sumDiscDiscounted += disc(i) * disclk(i, j) * d(R[i][0], R[j][0], abs(len(listUsers[i]) - len(listUsers[j])))  ##
 
-        # t1.stop()
-        # t1.getInfo()
+
         C = 0
         for k in range(lengthScore2):
             C += disc(k)
 
         C = 1 / C
 
-        # t2.start()
         Clinha = 0
         for i in range(lengthScore2):
             for j in range(lengthScore2):
@@ -291,13 +289,11 @@ def getDiversity(score, label, listU):
             Clinha = C / Clinha
         else:
             Clinha = 0
-        # t2.stop()
-        # t2.getInfo()
         listEILD.append(Clinha * sumDiscDiscounted)
         cont -= 1
         if cont <= 0:
             break
-    # print('diversity: ')
+    print('diversity: ' + str(np.mean(listEILD)))
     # print(np.mean(listEILD))
     return np.array(listEILD)
 
