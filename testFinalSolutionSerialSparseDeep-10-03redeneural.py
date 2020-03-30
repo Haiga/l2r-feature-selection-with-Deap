@@ -1,6 +1,6 @@
 import json
 from rpy2 import robjects
-import evaluateIndividuoOld2
+
 import evaluateIndividuoSerial
 import l2rCodesSerial
 import numpy as np
@@ -120,8 +120,8 @@ for dataset in DATASETS:
 
         ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
         ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+        diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, y_test, query_id_test))
+        noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, y_test, query_id_test))
 
         # SPEA best IND RF
         print('reading and training SPEA bestind')
@@ -143,8 +143,8 @@ for dataset in DATASETS:
 
         ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
         ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+        diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, y_test, query_id_test))
+        noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, y_test, query_id_test))
 
         # FULL best IND RF
         print('reading and training FULL')
@@ -166,8 +166,8 @@ for dataset in DATASETS:
 
         ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
         ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+        diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, y_test, query_id_test))
+        noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, y_test, query_id_test))
 
         # model = RN full
         print('reading and training RN nsga best Ind')
@@ -220,8 +220,8 @@ for dataset in DATASETS:
 
         ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
         ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+        diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, y_test, query_id_test))
+        noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, y_test, query_id_test))
 
         ##############################################
         # model = RN full
@@ -275,8 +275,8 @@ for dataset in DATASETS:
 
         ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
         ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+        diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, y_test, query_id_test))
+        noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, y_test, query_id_test))
         ##########################################################################
         # model = RN full
         print('reading and training RN FULL')
@@ -329,8 +329,8 @@ for dataset in DATASETS:
 
         ndcg, queries = l2rCodesSerial.getEvaluation(scoreTest, query_id_test, y_test, dataset, METRIC, "test")
         ndcgs.append(queries)
-        diversitys.append(evaluateIndividuoOld2.getDiversity(scoreTest, y_test, query_id_test))
-        noveltys.append(evaluateIndividuoOld2.getNovelty(scoreTest, y_test, query_id_test))
+        diversitys.append(evaluateIndividuoSerial.getDiversity(scoreTest, y_test, query_id_test))
+        noveltys.append(evaluateIndividuoSerial.getNovelty(scoreTest, y_test, query_id_test))
 
         print('Start Comparison:')
         # num = 6
