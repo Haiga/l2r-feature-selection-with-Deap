@@ -312,11 +312,6 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
             with open(NOME_COLECAO_BASE, 'w') as fp:
                 json.dump(TEMP_COLECAO_BASE, fp)
 
-            # %cd /content/tcc_l2r/resultados
-            # !git add .
-            # %cd /content/tcc_l2r
-            # !git commit -m 'resultados da experimentação'
-            # !git push
 
         persistResultTimer.stop()
 
@@ -381,17 +376,6 @@ def main(DATASET, NUM_FOLD, NUM_GENES, METHOD, PARAMS):
     with open("./r3/" + DATASET + METHOD + "fold" + NUM_FOLD + str_params + ".json", 'w') as fp:
         json.dump(timerInformations, fp)
 
-    # %cd /content/tcc_l2r/logs
-    # !git add .
-    # %cd /content/tcc_l2r
-    # !git commit -m 'logs para análise de evolução'
-    # !git push
-
-    # %cd /content/tcc_l2r/info
-    # !git add .
-    # %cd /content/tcc_l2r
-    # !git commit -m 'informações para análise de tempo'
-    # !git push
 
     if METHOD == 'nsga2':
         return population
