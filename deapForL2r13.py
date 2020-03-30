@@ -41,7 +41,7 @@ elif DATASET == 'yahoo':
 elif DATASET in ['movielens', 'lastfm', 'bibsonomy', 'youtube']:
     NUM_GENES = 13
     sparse = True
-elif DATASET in ['mv600']:
+elif DATASET in ['mv600', 'bib600', 'last600', 'you600']:
     NUM_GENES = 613
     sparse = True
 else:
