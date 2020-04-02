@@ -225,7 +225,7 @@ def getEvaluation(score, listQ, label, trainFile, metric, resultPrefix):
         for predic in ndcgQueries:
             MAP = MAP + predic
 
-    # print('ndcg: ' + str(MAP / idQ))
+    print('ndcg: ' + str(MAP / idQ))
     return MAP / idQ, ndcgQueries
     # return ndcgQueries, apQueries
 

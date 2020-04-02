@@ -17,7 +17,7 @@ def compare(x_vet, y_vet, min_p_value=0.1):
 
 
 # DATASETS = ['lastfm', 'movielens', 'youtube']
-DATASETS = ['mv600']
+DATASETS = ['last600', 'bib600', 'mv600']
 # NUM_FEATURES = 13
 NUM_FEATURES = 613
 params = ['diversityprecision', 'noveltydiversity', 'noveltydiversityprecision', 'noveltyprecision']
@@ -26,7 +26,7 @@ full = '1' * NUM_FEATURES
 for dataset in DATASETS:
     for param in params:
 
-        NOME_COLECAO_BASE = './22-03/r1/' + dataset + '-Fold' + '0obj_' + param + '.json'
+        NOME_COLECAO_BASE = './31-03tree/r1/' + dataset + '-Fold' + '0obj_' + param + '.json'
         COLECAO_BASE = {}
 
         try:
@@ -86,7 +86,7 @@ for dataset in DATASETS:
         # 6 is for SVM
         # 7 is for MLP
         # 1 is for RF
-        ENSEMBLE = 6  #
+        ENSEMBLE = 1  #
         NTREES = 20
         SEED = 1887
         NUM_FOLD = '0'

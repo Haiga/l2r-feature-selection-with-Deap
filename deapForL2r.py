@@ -51,9 +51,9 @@ SEED = 1313
 NTREES = 1
 SUB_CROSS = 3
 METRIC = 'NDCG'
-# ENSEMBLE = 4  # for regression
+ENSEMBLE = 4  # for regression
 # ENSEMBLE = 5  # for regression tree
-ENSEMBLE = 11  # for regression tree reduzida
+# ENSEMBLE = 11  # for regression tree reduzida
 ALGORITHM = 'reg'  # for baseline
 # ENSEMBLE = 1  # for regression forest
 ##

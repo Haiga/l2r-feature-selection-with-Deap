@@ -1,8 +1,9 @@
 import deapForL2r
 #started 15:52
 # base = "mv600"
-base = "last600"
+# base = "last600"
 # base = "you600"
+base = "bib600"
 num_features = 613
 PARAMS = ['novelty', 'diversity', 'precision']
 deapForL2r.main(base, str(0), num_features, 'spea2', PARAMS)

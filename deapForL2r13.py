@@ -5,7 +5,7 @@ import random
 from copy import deepcopy
 
 from deap import creator, base, tools, algorithms
-import evaluateIndividuoSerial
+import evaluateIndividuoSerial13 as evaluateIndividuoSerial
 import l2rCodesSerial
 import json
 import numpy as np
