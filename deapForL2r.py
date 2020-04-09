@@ -13,14 +13,8 @@ import numpy as np
 import controlTime as ct
 import readSintetic
 
-# NUM_INDIVIDUOS = 75  # 50
-# NUM_INDIVIDUOS = 10  # 50
-# NUM_INDIVIDUOS = 8  # 50
-NUM_INDIVIDUOS = 30  # 50
-# NUM_GENERATIONS = 50  # 50
-# NUM_GENERATIONS = 10  # 50
-# NUM_GENERATIONS = 8  # 50
-NUM_GENERATIONS = 20  # 50
+NUM_INDIVIDUOS = 50
+NUM_GENERATIONS = 30
 NUM_GENES = None
 
 PARAMS = None

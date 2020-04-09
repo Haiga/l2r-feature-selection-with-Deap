@@ -322,7 +322,7 @@ def getTheModel(ensemble, ntrees, frate, seed, coll):
         clf = svm.SVR(verbose=True, max_iter=100)
 
     if ensemble == 7:
-        clf = MLPRegressor(hidden_layer_sizes=(20, ), max_iter=20, verbose=True)
+        clf = MLPRegressor(hidden_layer_sizes=(20, ), max_iter=20, verbose=False)
 
     if ensemble == 10:
         if "200" in coll:
